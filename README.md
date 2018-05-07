@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser)
+[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser) [![Coverage Status](https://coveralls.io/repos/github/elliotjreed/database-anonymiser/badge.svg?branch=master)](https://coveralls.io/github/elliotjreed/database-anonymiser?branch=master)
 
 # PHP Database Anonymiser
 
