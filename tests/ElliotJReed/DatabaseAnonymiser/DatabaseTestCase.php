@@ -8,10 +8,11 @@ use PDO;
 
 class DatabaseTestCase extends TestCase
 {
-    private $db;
+    /* @var PDO */
+    protected $pdo;
 
     public function setUp(): void
     {
-        $this->db = new PDO('sqlite::memory:');
+        $this->pdo = new PDO('sqlite::memory:', '', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 }
