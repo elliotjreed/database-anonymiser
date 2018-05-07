@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="vendor/autoload.php" backupGlobals="false" colors="true" syntaxCheck="true">
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
     <testsuites>
         <testsuite name="Database Anonymiser Test Suite">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
