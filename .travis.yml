@@ -2,7 +2,8 @@ sudo: false
 
 language: php
 
-dist: trusty
+git:
+  depth: 1
 
 php:
   - 7.1
