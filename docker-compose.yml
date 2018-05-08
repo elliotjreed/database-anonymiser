@@ -1,0 +1,40 @@
+version: "3.5"
+
+services:
+  phpunit:
+    container_name: phpunnit
+    build: ./docker/phpunit
+    volumes:
+      - ./vendor:/app/vendor:ro
+      - ./tests:/app/tests:ro
+      - ./src:/app/src:ro
+      - ./phpunit.xml:/app/phpunit.xml:ro
+      - ./coverage:/app/coverage:rw
+      - ./testdox:/app/testdox:rw
+    depends_on:
+      - mysql
+    command: -c phpunit.xml --coverage-text
+
+
+  mysql:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: database_anonymiser
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: database_anonymiser
+#
+#  mssql:
+#    image: microsoft/mssql-server-linux
+#    restart: always
+#    environment:
+#      ACCEPT_EULA: Y
+#      SA_PASSWORD: password
+#      POSTGRES_DB: database_anonymiser

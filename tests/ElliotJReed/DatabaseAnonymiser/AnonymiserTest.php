@@ -9,28 +9,32 @@ use PDO;
 
 class AnonymiserTest extends DatabaseTestCase
 {
+    /* @var PDO */
+    private $db;
+
+    public function setUp(): void
+    {
+        $this->db = $this->sqlite()->getConnection();
+    }
+
     public function testItThrowsExceptionWhenTableDoesNotExistInDatabase(): void
     {
         $this->expectException(ConfigurationException::class);
-        $confirguation = [
-            'example_table' => [
-                'example_row' => 'anonymised string'
-            ]
-        ];
-        (new Anonymiser($this->pdo))->anonymise($confirguation);
+
+        (new Anonymiser($this->db))->anonymise(['example_table' => []]);
     }
 
-    public function testItAnonymisesString()
+    public function testItAnonymisesString(): void
     {
-        $this->pdo->exec('CREATE TABLE example_table (example_row VARCHAR(17))');
-        $this->pdo->exec('INSERT INTO example_table (example_row) VALUES ("original string")');
+        $this->db->exec('CREATE TABLE example_table (example_row VARCHAR(17))');
+        $this->db->exec('INSERT INTO example_table (example_row) VALUES ("original string")');
         $confirguation = [
             'example_table' => [
                 'example_row' => 'anonymised string'
             ]
         ];
-        (new Anonymiser($this->pdo))->anonymise($confirguation);
-        $result = $this->pdo->query('SELECT example_row FROM example_table')->fetch(PDO::FETCH_COLUMN);
+        (new Anonymiser($this->db))->anonymise($confirguation);
+        $result = $this->db->query('SELECT example_row FROM example_table')->fetch(PDO::FETCH_COLUMN);
 
         $this->assertEquals('anonymised string', $result);
     }

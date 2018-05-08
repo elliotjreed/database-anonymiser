@@ -25,11 +25,16 @@ class Information
 
     private function tableListSql(): string
     {
-        switch ($this->databaseDriver()) {
+        $databaseDriver = $this->databaseDriver();
+        switch ($databaseDriver) {
             case 'sqlite':
                 return 'SELECT `name` FROM sqlite_master WHERE type="table"';
+            case 'mysql':
+                return 'SHOW TABLES';
+            case 'pgsql':
+                return "SELECT * FROM pg_catalog.pg_tables WHERE schemaname != 'pg_catalog' AND schemaname != 'information_schema'";
             default:
-                throw new UnsupportedDatabaseException('Unsupported database');
+                throw new UnsupportedDatabaseException('Unsupported database driver: ' . $databaseDriver);
         }
     }
 

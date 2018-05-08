@@ -8,11 +8,31 @@ use PDO;
 
 class DatabaseTestCase extends TestCase
 {
-    /* @var PDO */
-    protected $pdo;
+    private $pdo;
 
-    public function setUp(): void
+    protected function sqlite(): DatabaseTestCase
     {
         $this->pdo = new PDO('sqlite::memory:', '', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        return $this;
+    }
+
+    protected function mysql(): DatabaseTestCase
+    {
+        $this->pdo = new PDO('mysql:host=mysql;dbname=database_anonymiser', 'root', 'password', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        return $this;
+    }
+
+    protected function postgres(): DatabaseTestCase
+    {
+        $this->pdo = new PDO('pgsql:host=postgres;dbname=database_anonymiser', 'postgres', 'password', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+
+        return $this;
+    }
+
+    protected function getConnection(): PDO
+    {
+        return $this->pdo;
     }
 }
