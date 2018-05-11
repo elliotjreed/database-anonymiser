@@ -12,15 +12,15 @@ git:
   depth: 1
 
 before_install:
-  - docker-compose --version
   - mkdir -p ./coverage
-  - docker-compose up -d
+  - docker-compose --version
+  - docker-compose build
 
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 before_script:
-  - docker-compose ps
+  - docker-compose up
 
 script:
   - docker-compose run php vendor/bin/phpunit -c phpunit.xml
