@@ -13,11 +13,13 @@ git:
 
 before_install:
   - docker-compose --version
-
-before_script:
-  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
   - mkdir -p ./coverage
   - docker-compose up -d
+
+install:
+  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
+
+before_script:
   - docker-compose ps
 
 script:
