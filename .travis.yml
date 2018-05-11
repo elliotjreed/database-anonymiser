@@ -15,8 +15,8 @@ before_script:
 
 script:
   - mkdir ./coverage
-  - docker-compose exec phpunit -c phpunit.xml
-  - docker-compose exec phpcs --standard=ruleset.xml
+  - docker-compose run phpunit -c phpunit.xml
+  - docker-compose run phpcs --standard=ruleset.xml
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
