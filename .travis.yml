@@ -14,13 +14,13 @@ git:
 before_install:
   - mkdir -p ./coverage
   - docker-compose --version
-  - docker-compose build
+  - docker-compose up --no-start --detach
 
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 before_script:
-  - docker-compose up
+  - docker-compose start
 
 script:
   - docker-compose run php vendor/bin/phpunit -c phpunit.xml
