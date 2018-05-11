@@ -24,7 +24,7 @@ before_script:
 
 script:
   - php vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - sleep 5; docker-compose run php vendor/bin/phpunit -c phpunit.xml
+  - sleep 10; docker-compose run php vendor/bin/phpunit -c phpunit.xml
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
