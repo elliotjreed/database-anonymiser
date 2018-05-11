@@ -11,12 +11,15 @@ RUN apk --no-cache add bash ca-certificates curl git unzip \
     sh /tmp/composer_installer.sh && \
     rm -f /tmp/composer_installer && \
     composer require phpunit/phpunit --no-interaction --no-suggest --no-progress && \
+    composer require squizlabs/php_codesniffer --no-interaction --no-suggest --no-progress && \
+    composer require php-coveralls/php-coveralls --no-interaction --no-suggest --no-progress && \
     ln -s /tmp/vendor/bin/phpunit /usr/local/bin/phpunit && \
-    sed -i 's/\;z/z/g' /etc/php7/conf.d/xdebug.ini && \
-    php -m | grep -i xdebug
+    ln -s /tmp/vendor/bin/php-coveralls /usr/local/bin/php-coveralls && \
+    ln -s /tmp/vendor/bin/phpcs /usr/local/bin/phpcs && \
+    sed -i 's/\;z/z/g' /etc/php7/conf.d/xdebug.ini
 
 VOLUME ["/app"]
 WORKDIR /app
 
 ENTRYPOINT ["/usr/local/bin/phpunit"]
-CMD ["--help"]
+CMD ["--version"]

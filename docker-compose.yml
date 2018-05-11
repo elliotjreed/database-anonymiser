@@ -13,8 +13,6 @@ services:
       - ./testdox:/app/testdox:rw
     depends_on:
       - mysql
-    command: -c phpunit.xml --coverage-text
-
 
   mysql:
     image: mariadb
@@ -30,11 +28,3 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database_anonymiser
-#
-#  mssql:
-#    image: microsoft/mssql-server-linux
-#    restart: always
-#    environment:
-#      ACCEPT_EULA: Y
-#      SA_PASSWORD: password
-#      POSTGRES_DB: database_anonymiser
