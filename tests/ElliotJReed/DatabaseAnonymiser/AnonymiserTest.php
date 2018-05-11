@@ -9,7 +9,6 @@ use PDO;
 
 class AnonymiserTest extends DatabaseTestCase
 {
-    /* @var PDO */
     private $db;
 
     public function setUp(): void
