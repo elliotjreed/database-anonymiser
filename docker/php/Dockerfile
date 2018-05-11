@@ -21,5 +21,5 @@ RUN apk --no-cache add bash ca-certificates curl git unzip \
 VOLUME ["/app"]
 WORKDIR /app
 
-ENTRYPOINT ["/usr/local/bin/phpunit"]
+ENTRYPOINT ["php"]
 CMD ["--version"]
