@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="vendor/autoload.php" backupGlobals="false" colors="true" syntaxCheck="true">
+<phpunit bootstrap="vendor/autoload.php" backupGlobals="false" colors="true">
     <logging>
         <log type="coverage-clover" target="coverage/clover.xml"/>
     </logging>
+    <php>
+        <env name="DB_DSN" value="sqlite::memory:"/>
+        <env name="DB_USERNAME" value=""/>
+        <env name="DB_PASSWORD" value=""/>
+    </php>
     <testsuites>
         <testsuite name="Database Anonymiser Test Suite">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>

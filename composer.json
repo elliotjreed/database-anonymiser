@@ -12,14 +12,19 @@
   "type": "project",
   "description": "",
   "autoload": {
-    "psr-4" : {
-      "ElliotJReed\\DatabaseAnonymiser\\" : "src/ElliotJReed/DatabaseAnonymiser/"
+    "psr-4": {
+      "ElliotJReed\\DatabaseAnonymiser\\": "src/ElliotJReed/DatabaseAnonymiser/"
     }
   },
   "autoload-dev": {
-    "psr-4" : {
-      "Tests\\ElliotJReed\\DatabaseAnonymiser\\" : "tests/ElliotJReed/DatabaseAnonymiser/"
+    "psr-4": {
+      "ElliotJReed\\Tests\\DatabaseAnonymiser\\": "tests/ElliotJReed/DatabaseAnonymiser/"
     }
+  },
+  "require": {
+    "php": "^7.2",
+    "ext-pdo": "*",
+    "ext-yaml": "*"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
@@ -32,7 +37,8 @@
       "@phpunit",
       "@phpcs"
     ],
-    "phpunit": "php vendor/bin/phpunit -c phpunit.xml --coverage-text --testdox-text ./testdox/testdox.txt; cat ./testdox/testdox.txt",
+    "phpunit": "php vendor/bin/phpunit -c phpunit.xml --coverage-text",
+    "coverage": "php vendor/bin/phpunit -c phpunit.xml --coverage-html ./coverage",
     "phpcs": "php vendor/bin/phpcs --standard=ruleset.xml"
   }
 }

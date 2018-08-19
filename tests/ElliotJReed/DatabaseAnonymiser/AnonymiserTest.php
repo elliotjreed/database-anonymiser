@@ -1,40 +1,197 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\ElliotJReed\DatabaseAnonymiser;
+namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Anonymiser;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationException;
+use ElliotJReed\DatabaseAnonymiser\Validator;
 use PDO;
 
 class AnonymiserTest extends DatabaseTestCase
 {
-    private $db;
+    /** @var Anonymiser */
+    private $anonymiser;
 
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
-        $this->db = $this->sqlite()->getConnection();
+        parent::setUp();
+        $this->anonymiser = new Anonymiser($this->pdo, new Validator($this->pdo));
     }
 
-    public function testItThrowsExceptionWhenTableDoesNotExistInDatabase(): void
-    {
-        $this->expectException(ConfigurationException::class);
-
-        (new Anonymiser($this->db))->anonymise(['example_table' => []]);
-    }
-
+    /**
+     * @return void
+     */
     public function testItAnonymisesString(): void
     {
-        $this->db->exec('CREATE TABLE example_table (example_row VARCHAR(17))');
-        $this->db->exec('INSERT INTO example_table (example_row) VALUES ("original string")');
-        $confirguation = [
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column VARCHAR(17));
+            INSERT INTO example_table (example_column) VALUES ("original string")'
+        );
+        $configuration = [
             'example_table' => [
-                'example_row' => 'anonymised string'
+                'columns' => [
+                    'example_column' => 'anonymised string'
+                ]
             ]
         ];
-        (new Anonymiser($this->db))->anonymise($confirguation);
-        $result = $this->db->query('SELECT example_row FROM example_table')->fetch(PDO::FETCH_COLUMN);
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(PDO::FETCH_COLUMN);
 
         $this->assertEquals('anonymised string', $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItAnonymisesMultipleColumns(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column VARCHAR(17), second_example_column VARCHAR(24));
+            INSERT INTO example_table (example_column, second_example_column) VALUES ("original string", "second original string")'
+        );
+        $configuration = [
+            'example_table' => [
+                'columns' => [
+                    'example_column' => 'anonymised string',
+                    'second_example_column' => 'second anonymised string'
+                ]
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetch();
+
+        $this->assertEquals('anonymised string', $result['example_column']);
+        $this->assertEquals('second anonymised string', $result['second_example_column']);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItRemovesNumberOfRowsInTable(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column INT(1));
+            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
+        );
+        $configuration = [
+            'example_table' => [
+                'remove' => 4
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(PDO::FETCH_COLUMN);
+
+        $this->assertEquals(5, $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItRemovesNumberOfRowsInTableRetainingMostRecent(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column INT(1));
+            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
+        );
+        $configuration = [
+            'example_table' => [
+                'remove' => 4
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
+
+        $this->assertEquals([5, 6, 7, 8, 9], $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItRemovesNumberOfRowsAndReplacesValues(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
+            INSERT INTO example_table (example_column, second_example_column) VALUES ("a", 1), ("b", 2), ("c", 3), ("d", 4), ("e", 5)'
+        );
+        $configuration = [
+            'example_table' => [
+                'remove' => 3,
+                'columns' => [
+                    'example_column' => 'x',
+                    'second_example_column' => 9
+                ]
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->assertEquals([['example_column' => 'x', 'second_example_column' => 9], ['example_column' => 'x', 'second_example_column' => 9]], $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItTruncatesTable(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column INT(1));
+            INSERT INTO example_table (example_column) VALUES (1), (2), (3)'
+        );
+        $configuration = [
+            'example_table' => [
+                'truncate' => true
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT * FROM example_table')->fetchAll();
+
+        $this->assertEquals([], $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItRetainsNumberOfRowsRetainingMostRecent(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column INT(1));
+            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
+        );
+        $configuration = [
+            'example_table' => [
+                'retain' => 3
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
+
+        $this->assertEquals([7, 8, 9], $result);
+    }
+
+    /**
+     * @return void
+     */
+    public function testItRetainsNumberOfRowsAndReplacesValues(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
+            INSERT INTO example_table (example_column, second_example_column) VALUES ("a", 1), ("b", 2), ("c", 3), ("d", 4), ("e", 5)'
+        );
+        $configuration = [
+            'example_table' => [
+                'retain' => 2,
+                'columns' => [
+                    'example_column' => 'x',
+                    'second_example_column' => 9
+                ]
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->assertEquals([['example_column' => 'x', 'second_example_column' => 9], ['example_column' => 'x', 'second_example_column' => 9]], $result);
     }
 }

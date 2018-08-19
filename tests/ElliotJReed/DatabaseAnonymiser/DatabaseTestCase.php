@@ -1,38 +1,21 @@
 <?php
 declare(strict_types=1);
 
-namespace Tests\ElliotJReed\DatabaseAnonymiser;
+namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use PHPUnit\Framework\TestCase;
 use PDO;
 
 class DatabaseTestCase extends TestCase
 {
-    private $pdo;
+    /** @var PDO */
+    protected $pdo;
 
-    protected function sqlite(): DatabaseTestCase
+    /**
+     * @return void
+     */
+    public function setUp(): void
     {
-        $this->pdo = new PDO('sqlite::memory:', '', '', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-        return $this;
-    }
-
-    protected function mysql(): DatabaseTestCase
-    {
-        $this->pdo = new PDO('mysql:host=mysql;dbname=database_anonymiser', 'root', 'password', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-        return $this;
-    }
-
-    protected function postgres(): DatabaseTestCase
-    {
-        $this->pdo = new PDO('pgsql:host=postgres;dbname=database_anonymiser', 'postgres', 'password', [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
-
-        return $this;
-    }
-
-    protected function getConnection(): PDO
-    {
-        return $this->pdo;
+        $this->pdo = new PDO(getenv('DB_DSN'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 }
