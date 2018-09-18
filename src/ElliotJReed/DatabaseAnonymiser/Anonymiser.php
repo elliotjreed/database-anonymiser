@@ -58,6 +58,9 @@ class Anonymiser
     }
 
     /**
+     * Note: This method could be written as `DELETE FROM $tableName LIMIT :limit but this is not currently supported by
+     *       default in SQLite (see: https://sqlite.org/compile.html#enable_update_delete_limit)
+     *
      * @param string $tableName The name of the table to remove columns from
      * @param int $numberOfRowsToRemove The number of rows to remove from the table
      * @return void

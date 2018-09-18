@@ -7,6 +7,9 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 
 class DatabaseInformationTest extends DatabaseTestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -20,7 +23,7 @@ class DatabaseInformationTest extends DatabaseTestCase
     {
         $info = (new DatabaseInformation($this->pdo))->tables();
 
-        $this->assertEquals(['example_table'], $info);
+        $this->assertSame(['example_table'], $info);
     }
     /**
      * @return void
@@ -29,6 +32,6 @@ class DatabaseInformationTest extends DatabaseTestCase
     {
         $info = (new DatabaseInformation($this->pdo))->columns('example_table');
 
-        $this->assertEquals(['example_column', 'second_example_column'], $info);
+        $this->assertSame(['example_column', 'second_example_column'], $info);
     }
 }
