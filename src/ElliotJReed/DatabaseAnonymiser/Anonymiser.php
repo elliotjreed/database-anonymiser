@@ -12,6 +12,7 @@ class Anonymiser
     private $validator;
 
     /**
+     * Anonymiser constructor.
      * @param PDO $pdo
      * @param Validator $validator
      */
@@ -45,16 +46,49 @@ class Anonymiser
         if (isset($configuration['truncate']) && $configuration['truncate'] === true) {
             $this->truncate($tableName);
         } else {
-            if (isset($configuration['retain'])) {
-                $this->retainColumns($tableName, $configuration['retain']);
-            } elseif (isset($configuration['remove'])) {
-                $this->removeColumns($tableName, $configuration['remove']);
-            }
-
-            if (isset($configuration['columns'])) {
-                $this->replaceRowValues($tableName, $configuration['columns']);
-            }
+            $this->modifyRows($tableName, $configuration);
         }
+    }
+
+    /**
+     * @param string $tableName The name of the table to truncate
+     * @return void
+     */
+    private function truncate(string $tableName): void
+    {
+        $this->pdo->exec('DELETE FROM ' . $tableName);
+    }
+
+    /**
+     * @param string $tableName
+     * @param array $configuration
+     */
+    private function modifyRows(string $tableName, array $configuration): void
+    {
+        if (isset($configuration['retain'])) {
+            $this->retainColumns($tableName, $configuration['retain']);
+        } elseif (isset($configuration['remove'])) {
+            $this->removeColumns($tableName, $configuration['remove']);
+        }
+
+        if (isset($configuration['columns'])) {
+            $this->replaceRowValues($tableName, $configuration['columns']);
+        }
+    }
+
+    /**
+     * @param string $tableName The name of the table to remove columns from
+     * @param int $numberOfRowsToRetain The number of rows to retain in the table
+     * @return void
+     */
+    private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
+    {
+        $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $tableName);
+        $totalRows = $query->fetch(PDO::FETCH_COLUMN);
+
+        $rowsToRemove = $totalRows - $numberOfRowsToRetain;
+
+        $this->removeColumns($tableName, $rowsToRemove);
     }
 
     /**
@@ -83,29 +117,5 @@ class Anonymiser
 
         $query = $this->pdo->prepare('UPDATE `' . $tableName . '` SET ' . trim($replacementParameters, ', '));
         $query->execute(array_values($columns));
-    }
-
-    /**
-     * @param string $tableName The name of the table to truncate
-     * @return void
-     */
-    private function truncate(string $tableName): void
-    {
-        $this->pdo->exec('DELETE FROM ' . $tableName);
-    }
-
-    /**
-     * @param string $tableName The name of the table to remove columns from
-     * @param int $numberOfRowsToRetain The number of rows to retain in the table
-     * @return void
-     */
-    private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
-    {
-        $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $tableName);
-        $totalRows = $query->fetch(PDO::FETCH_COLUMN);
-
-        $rowsToRemove = $totalRows - $numberOfRowsToRetain;
-
-        $this->removeColumns($tableName, $rowsToRemove);
     }
 }

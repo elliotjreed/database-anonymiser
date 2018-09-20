@@ -3,3 +3,4 @@ composer.phar
 /.idea/
 /coverage/
 /testdox/
+/bin/*.yml

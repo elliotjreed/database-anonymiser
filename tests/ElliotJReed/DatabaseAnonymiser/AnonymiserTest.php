@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Anonymiser;
+use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use PDO;
 
@@ -18,7 +19,7 @@ class AnonymiserTest extends DatabaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->anonymiser = new Anonymiser($this->pdo, new Validator($this->pdo));
+        $this->anonymiser = new Anonymiser($this->pdo, new Validator($this->pdo, new DatabaseInformation($this->pdo)));
     }
 
     /**

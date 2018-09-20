@@ -11,8 +11,8 @@ class DatabaseInformation
     private $db;
 
     /**
+     * DatabaseInformation constructor.
      * @param PDO $pdo
-     * @return void
      */
     public function __construct(PDO $pdo)
     {
@@ -20,7 +20,7 @@ class DatabaseInformation
     }
 
     /**
-     * @return array
+     * @return array An array of tables in the database
      * @throws UnsupportedDatabaseException
      */
     public function tables(): array
@@ -38,7 +38,7 @@ class DatabaseInformation
     }
 
     /**
-     * @return string
+     * @return string The appropriate SQL query for returning a list of tables depending on the database driver used
      * @throws UnsupportedDatabaseException
      */
     private function tableListSql(): string
@@ -56,7 +56,8 @@ class DatabaseInformation
     }
 
     /**
-     * @return string
+     * @param string $table The name of the database table
+     * @return array An array of columns in the table
      * @throws UnsupportedDatabaseException
      */
     private function columnList(string $table): array
@@ -81,14 +82,14 @@ class DatabaseInformation
     }
 
     /**
-     * @param string $table
-     * @return array
+     * @param string $table The table name
+     * @return array An array of columns in the table
      */
     private function sqliteTableColumns(string $table): array
     {
-        $result = $this->db->query('PRAGMA table_info("' . $table . '")');
+        $tables = $this->db->query('PRAGMA table_info("' . $table . '")')->fetchAll();
         $columns = [];
-        foreach ($result->fetchAll() as $table) {
+        foreach ($tables as $table) {
             $columns[] = $table['name'];
         }
 
@@ -96,8 +97,8 @@ class DatabaseInformation
     }
 
     /**
-     * @param string $table
-     * @return array
+     * @param string $table The table name
+     * @return array An array of columns in the table
      */
     private function ansiTableColumns(string $table): array
     {

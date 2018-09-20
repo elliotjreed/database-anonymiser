@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
+use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationException;
 
@@ -15,7 +16,7 @@ class ValidatorTest extends DatabaseTestCase
     {
         $this->expectException(ConfigurationException::class);
 
-        (new Validator($this->pdo))->validateConfiguration(['example_table' => []]);
+        (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => []]);
     }
 
     /**
@@ -26,6 +27,6 @@ class ValidatorTest extends DatabaseTestCase
         $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
         $this->expectException(ConfigurationException::class);
 
-        (new Validator($this->pdo))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
+        (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
     }
 }

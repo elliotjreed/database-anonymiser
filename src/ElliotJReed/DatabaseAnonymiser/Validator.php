@@ -12,6 +12,7 @@ class Validator
     private $databaseInformation;
 
     /**
+     * Validator constructor.
      * @param PDO $pdo
      * @param DatabaseInformation $databaseInformation
      */
@@ -49,7 +50,7 @@ class Validator
 
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
-     * @return bool
+     * @return bool Returns false if the columns specified do not exist, true if they all do or the configuration does not specify any columns
      */
     private function columnsExist(array $tablesConfiguration): bool
     {
