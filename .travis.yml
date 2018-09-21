@@ -3,7 +3,7 @@ sudo: false
 language: php
 
 php:
-  - 7.1
+  - 7.2
 
 services:
   - docker
@@ -13,8 +13,6 @@ git:
 
 before_install:
   - mkdir -p ./coverage
-  - docker-compose --version
-  - docker-compose up --no-start
 
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
@@ -24,7 +22,7 @@ before_script:
 
 script:
   - php vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - sleep 10; docker-compose run php vendor/bin/phpunit -c phpunit.xml
+  - php vendor/bin/phpunit -c phpunit.xml
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
