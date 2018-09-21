@@ -13,7 +13,7 @@ git:
 
 before_install:
   - mkdir -p ./coverage
-  - pecl install yaml
+  - printf "\n" | pecl install yaml
   - echo "extension = yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 
 install:
