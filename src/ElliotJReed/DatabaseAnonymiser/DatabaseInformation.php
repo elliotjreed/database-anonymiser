@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use PDO;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabaseException;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseInformation
 {
@@ -21,7 +21,7 @@ class DatabaseInformation
 
     /**
      * @return array An array of tables in the database
-     * @throws UnsupportedDatabaseException
+     * @throws UnsupportedDatabase
      */
     public function tables(): array
     {
@@ -39,7 +39,7 @@ class DatabaseInformation
 
     /**
      * @return string The appropriate SQL query for returning a list of tables depending on the database driver used
-     * @throws UnsupportedDatabaseException
+     * @throws UnsupportedDatabase
      */
     private function tableListSql(): string
     {
@@ -51,14 +51,14 @@ class DatabaseInformation
                 return 'SELECT TABLE_NAME
                   FROM INFORMATION_SCHEMA.Tables';
             default:
-                throw new UnsupportedDatabaseException('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
         }
     }
 
     /**
      * @param string $table The name of the database table
      * @return array An array of columns in the table
-     * @throws UnsupportedDatabaseException
+     * @throws UnsupportedDatabase
      */
     private function columnList(string $table): array
     {
@@ -69,7 +69,7 @@ class DatabaseInformation
             case 'mysql':
                 return $this->ansiTableColumns($table);
             default:
-                throw new UnsupportedDatabaseException('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
         }
     }
 

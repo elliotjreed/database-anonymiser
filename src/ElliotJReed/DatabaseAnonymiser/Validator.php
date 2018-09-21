@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ElliotJReed\DatabaseAnonymiser;
 
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationException;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 use PDO;
 
 class Validator
@@ -25,23 +25,23 @@ class Validator
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
      * @return void
-     * @throws ConfigurationException
-     * @throws Exceptions\UnsupportedDatabaseException
+     * @throws ConfigurationFile
+     * @throws Exceptions\UnsupportedDatabase
      */
     public function validateConfiguration(array $tablesConfiguration): void
     {
         if (!$this->tablesExist(array_keys($tablesConfiguration))) {
-            throw new ConfigurationException('Configuration contains table(s) which do not exist in the database');
+            throw new ConfigurationFile('Configuration contains table(s) which do not exist in the database');
         }
         if (!$this->columnsExist($tablesConfiguration)) {
-            throw new ConfigurationException('Configuration contains columns(s) which do not exist in the database');
+            throw new ConfigurationFile('Configuration contains columns(s) which do not exist in the database');
         }
     }
 
     /**
      * @param array $tableNames An array of table names
      * @return bool
-     * @throws Exceptions\UnsupportedDatabaseException
+     * @throws Exceptions\UnsupportedDatabase
      */
     private function tablesExist(array $tableNames): bool
     {

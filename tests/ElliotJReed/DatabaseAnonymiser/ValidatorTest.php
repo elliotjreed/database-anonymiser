@@ -5,7 +5,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationException;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 
 class ValidatorTest extends DatabaseTestCase
 {
@@ -14,7 +14,7 @@ class ValidatorTest extends DatabaseTestCase
      */
     public function testItThrowsExceptionWhenTableDoesNotExistInDatabase(): void
     {
-        $this->expectException(ConfigurationException::class);
+        $this->expectException(ConfigurationFile::class);
 
         (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => []]);
     }
@@ -25,7 +25,7 @@ class ValidatorTest extends DatabaseTestCase
     public function testItThrowsExceptionWhenColumnDoesNotExistInTable(): void
     {
         $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
-        $this->expectException(ConfigurationException::class);
+        $this->expectException(ConfigurationFile::class);
 
         (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
     }

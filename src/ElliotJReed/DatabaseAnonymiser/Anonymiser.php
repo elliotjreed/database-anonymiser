@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ElliotJReed\DatabaseAnonymiser;
 
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationException;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 use PDO;
 
 class Anonymiser
@@ -24,8 +24,8 @@ class Anonymiser
 
     /**
      * @param array $tables An array of table names with their corresponding configurations
-     * @throws ConfigurationException
-     * @throws Exceptions\UnsupportedDatabaseException
+     * @throws ConfigurationFile
+     * @throws Exceptions\UnsupportedDatabase
      * @return void
      */
     public function anonymise(array $tables): void

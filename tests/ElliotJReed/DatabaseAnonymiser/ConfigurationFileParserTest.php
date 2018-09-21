@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\ConfigurationFileParser;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedConfigurationFile;
 use PHPUnit\Framework\TestCase;
 use SplFileObject;
 
@@ -51,5 +52,16 @@ class ConfigurationFileParserTest extends TestCase
         $file = new SplFileObject('/tmp/test.yml', 'r');
 
         $this->assertSame(['field' => 'value'], (new ConfigurationFileParser($file))->toArray());
+    }
+
+    /**
+     * @return void
+     */
+    public function testItThrowsExceptionOnUnknownConfigurationFileType(): void
+    {
+        $this->expectException(UnsupportedConfigurationFile::class);
+
+        $file = new SplFileObject('/tmp/test.ext', 'w+');
+        (new ConfigurationFileParser($file))->toArray();
     }
 }
