@@ -5,6 +5,7 @@ namespace ElliotJReed\DatabaseAnonymiser\Exceptions;
 
 use Exception;
 
-class UnsupportedDatabaseException extends Exception
+class UnsupportedDatabase extends Exception
 {
+    protected $message = 'Database driver is not supported.';
 }

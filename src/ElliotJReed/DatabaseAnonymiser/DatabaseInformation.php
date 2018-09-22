@@ -4,15 +4,15 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use PDO;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabaseException;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseInformation
 {
     private $db;
 
     /**
+     * DatabaseInformation constructor.
      * @param PDO $pdo
-     * @return void
      */
     public function __construct(PDO $pdo)
     {
@@ -20,8 +20,8 @@ class DatabaseInformation
     }
 
     /**
-     * @return array
-     * @throws UnsupportedDatabaseException
+     * @return array An array of tables in the database
+     * @throws UnsupportedDatabase
      */
     public function tables(): array
     {
@@ -38,8 +38,8 @@ class DatabaseInformation
     }
 
     /**
-     * @return string
-     * @throws UnsupportedDatabaseException
+     * @return string The appropriate SQL query for returning a list of tables depending on the database driver used
+     * @throws UnsupportedDatabase
      */
     private function tableListSql(): string
     {
@@ -51,13 +51,14 @@ class DatabaseInformation
                 return 'SELECT TABLE_NAME
                   FROM INFORMATION_SCHEMA.Tables';
             default:
-                throw new UnsupportedDatabaseException('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
         }
     }
 
     /**
-     * @return string
-     * @throws UnsupportedDatabaseException
+     * @param string $table The name of the database table
+     * @return array An array of columns in the table
+     * @throws UnsupportedDatabase
      */
     private function columnList(string $table): array
     {
@@ -68,7 +69,7 @@ class DatabaseInformation
             case 'mysql':
                 return $this->ansiTableColumns($table);
             default:
-                throw new UnsupportedDatabaseException('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
         }
     }
 
@@ -81,14 +82,14 @@ class DatabaseInformation
     }
 
     /**
-     * @param string $table
-     * @return array
+     * @param string $table The table name
+     * @return array An array of columns in the table
      */
     private function sqliteTableColumns(string $table): array
     {
-        $result = $this->db->query('PRAGMA table_info("' . $table . '")');
+        $tables = $this->db->query('PRAGMA table_info("' . $table . '")')->fetchAll();
         $columns = [];
-        foreach ($result->fetchAll() as $table) {
+        foreach ($tables as $table) {
             $columns[] = $table['name'];
         }
 
@@ -96,8 +97,8 @@ class DatabaseInformation
     }
 
     /**
-     * @param string $table
-     * @return array
+     * @param string $table The table name
+     * @return array An array of columns in the table
      */
     private function ansiTableColumns(string $table): array
     {
