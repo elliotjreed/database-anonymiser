@@ -19,9 +19,6 @@ before_install:
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
-before_script:
-  - docker-compose start
-
 script:
   - php vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
   - php vendor/bin/phpunit -c phpunit.xml
