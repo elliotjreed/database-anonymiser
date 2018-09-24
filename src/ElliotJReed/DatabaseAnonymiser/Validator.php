@@ -25,47 +25,47 @@ class Validator
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
      * @return void
-     * @throws ConfigurationFile
+     * @throws Exceptions\ConfigurationFile
      * @throws Exceptions\UnsupportedDatabase
      */
     public function validateConfiguration(array $tablesConfiguration): void
     {
-        if (!$this->tablesExist(array_keys($tablesConfiguration))) {
-            throw new ConfigurationFile('Configuration contains table(s) which do not exist in the database');
-        }
-        if (!$this->columnsExist($tablesConfiguration)) {
-            throw new ConfigurationFile('Configuration contains columns(s) which do not exist in the database');
-        }
+        $this->checkTablesExist(array_keys($tablesConfiguration));
+        $this->columnsExist($tablesConfiguration);
     }
 
     /**
      * @param array $tableNames An array of table names
-     * @return bool
+     * @return void
      * @throws Exceptions\UnsupportedDatabase
+     * @throws Exceptions\ConfigurationFile
      */
-    private function tablesExist(array $tableNames): bool
+    private function checkTablesExist(array $tableNames): void
     {
-        return !array_diff($tableNames, $this->databaseInformation->tables());
+        $tablesInDatabase = $this->databaseInformation->tables();
+        foreach ($tableNames as $tableName) {
+            if (!in_array($tableName, $tablesInDatabase)) {
+                throw new ConfigurationFile('Configuration contains table which does not exist in the database: ' . $tableName);
+            }
+        }
     }
 
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
-     * @return bool Returns false if the columns specified do not exist, true if they all do or the configuration does not specify any columns
+     * @return void
+     * @throws Exceptions\ConfigurationFile
      */
-    private function columnsExist(array $tablesConfiguration): bool
+    private function columnsExist(array $tablesConfiguration): void
     {
         foreach ($tablesConfiguration as $table => $configuration) {
-            if (!isset($configuration['columns'])) {
-                return true;
-            }
-            $tableColumns = $this->databaseInformation->columns($table);
-            foreach (array_keys($configuration['columns']) as $columnName) {
-                if (!in_array($columnName, $tableColumns)) {
-                    return false;
+            if (isset($configuration['columns'])) {
+                $tableColumns = $this->databaseInformation->columns($table);
+                foreach (array_keys($configuration['columns']) as $columnName) {
+                    if (!in_array($columnName, $tableColumns)) {
+                        throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $table . '.' . $columnName);
+                    }
                 }
             }
         }
-
-        return true;
     }
 }

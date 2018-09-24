@@ -12,7 +12,7 @@ require __DIR__ . '/../vendor/autoload.php';
 if (isset($argv[1])) {
     $configFile = $argv[1];
 } else {
-    exit('Please specify a YAML, JSON, or PHP configuration file.');
+    exit('Please specify a YAML, JSON, or PHP configuration file.' . PHP_EOL);
 }
 
 $configuration = (new ConfigurationFileParser(new SplFileObject($configFile, 'r')))->toArray();
