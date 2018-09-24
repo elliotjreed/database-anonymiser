@@ -6,7 +6,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 use PHPUnit\Framework\TestCase;
 use PDO;
 
-class DatabaseTestCase extends TestCase
+class SqliteTestCase extends TestCase
 {
     /** @var PDO */
     protected $pdo;
@@ -16,6 +16,6 @@ class DatabaseTestCase extends TestCase
      */
     public function setUp(): void
     {
-        $this->pdo = new PDO(getenv('DB_DSN'), getenv('DB_USERNAME'), getenv('DB_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new PDO(getenv('SQLITE_DSN'), getenv('SQLITE_USERNAME'), getenv('SQLITE_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 }

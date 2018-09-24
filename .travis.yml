@@ -1,12 +1,12 @@
-sudo: false
+sudo: required
 
 language: php
 
-php:
-  - 7.2
-
 services:
   - docker
+
+php:
+  - 7.2
 
 git:
   depth: 1
@@ -21,7 +21,7 @@ install:
 
 script:
   - php vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - php vendor/bin/phpunit -c phpunit.xml
+  - php vendor/bin/phpunit -c phpunit.xml --testsuite all
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls

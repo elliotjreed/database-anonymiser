@@ -8,7 +8,7 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use PDO;
 
-class AnonymiserTest extends DatabaseTestCase
+class AnonymiserTest extends SqliteTestCase
 {
     /** @var Anonymiser */
     private $anonymiser;

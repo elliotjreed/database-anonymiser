@@ -4,13 +4,21 @@
         <log type="coverage-clover" target="coverage/clover.xml"/>
     </logging>
     <php>
-        <env name="DB_DSN" value="sqlite::memory:"/>
-        <env name="DB_USERNAME" value=""/>
-        <env name="DB_PASSWORD" value=""/>
+        <env name="SQLITE_DSN" value="sqlite::memory:"/>
+        <env name="SQLITE_USERNAME" value=""/>
+        <env name="SQLITE_PASSWORD" value=""/>
+
+        <env name="MYSQL_DSN" value="mysql:host=mysql-test;dbname=test"/>
+        <env name="MYSQL_USERNAME" value="root"/>
+        <env name="MYSQL_PASSWORD" value="test"/>
     </php>
     <testsuites>
-        <testsuite name="Database Anonymiser Test Suite">
+        <testsuite name="all">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
+        </testsuite>
+        <testsuite name="sqlite">
+            <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
+            <exclude>./tests/ElliotJReed/DatabaseAnonymiser/MysqlDatabaseInformationTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>

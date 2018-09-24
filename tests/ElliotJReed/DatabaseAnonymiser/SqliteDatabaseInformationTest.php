@@ -5,7 +5,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 
-class DatabaseInformationTest extends DatabaseTestCase
+class SqliteDatabaseInformationTest extends SqliteTestCase
 {
     /**
      * @return void
