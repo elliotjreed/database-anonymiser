@@ -77,9 +77,6 @@ class Anonymiser
     }
 
     /**
-     * Note: This method could be written as `DELETE FROM $tableName LIMIT :limit but this is not currently supported by
-     *       default in SQLite (see: https://sqlite.org/compile.html#enable_update_delete_limit)
-     *
      * @param string $tableName The name of the table to remove columns from
      * @param int $numberOfRowsToRetain The number of rows to retain in the table
      * @return void
@@ -87,11 +84,12 @@ class Anonymiser
     private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
     {
         $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $tableName);
-        $totalRows = $query->fetch(PDO::FETCH_COLUMN);
+        $totalRows = (int) $query->fetch(PDO::FETCH_COLUMN);
 
-        $rowsToRemove = $totalRows - $numberOfRowsToRetain;
-
-        $this->removeColumns($tableName, $rowsToRemove);
+        if ($totalRows >= $numberOfRowsToRetain) {
+            $rowsToRemove = $totalRows - $numberOfRowsToRetain;
+            $this->removeColumns($tableName, $rowsToRemove);
+        }
     }
 
     /**

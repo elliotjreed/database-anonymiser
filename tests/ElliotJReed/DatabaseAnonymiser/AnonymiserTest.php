@@ -175,6 +175,26 @@ class AnonymiserTest extends SqliteTestCase
     /**
      * @return void
      */
+    public function testItDoesNothingWhenNumberOfRowsInTableIsLessThanRetainNumber(): void
+    {
+        $this->pdo->exec(
+            'CREATE TABLE example_table (example_column INT(1));
+            INSERT INTO example_table (example_column) VALUES (1), (2), (3)'
+        );
+        $configuration = [
+            'example_table' => [
+                'retain' => 4
+            ]
+        ];
+        $this->anonymiser->anonymise($configuration);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
+
+        $this->assertEquals([1, 2, 3], $result);
+    }
+
+    /**
+     * @return void
+     */
     public function testItRetainsNumberOfRowsAndReplacesValues(): void
     {
         $this->pdo->exec(
