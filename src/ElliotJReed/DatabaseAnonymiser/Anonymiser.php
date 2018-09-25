@@ -9,16 +9,19 @@ use PDO;
 class Anonymiser
 {
     private $pdo;
+    private $configuration;
     private $validator;
 
     /**
      * Anonymiser constructor.
      * @param PDO $pdo
+     * @param DatabaseConfiguration $configuration
      * @param Validator $validator
      */
-    public function __construct(PDO $pdo, Validator $validator)
+    public function __construct(PDO $pdo, DatabaseConfiguration $configuration, Validator $validator)
     {
         $this->pdo = $pdo;
+        $this->configuration = $configuration;
         $this->validator = $validator;
     }
 
@@ -30,6 +33,7 @@ class Anonymiser
      */
     public function anonymise(array $tables): void
     {
+        $this->configuration->disableForeignKeyChecks();
         $this->validator->validateConfiguration($tables);
         foreach ($tables as $tableName => $configuration) {
             $this->processTable($tableName, $configuration);

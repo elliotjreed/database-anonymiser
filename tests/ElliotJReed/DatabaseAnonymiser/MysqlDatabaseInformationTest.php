@@ -25,6 +25,7 @@ class MysqlDatabaseInformationTest extends MysqlTestCase
 
         $this->assertSame(['example_table'], $info);
     }
+
     /**
      * @return void
      */
