@@ -16,6 +16,6 @@ class SqliteTestCase extends TestCase
      */
     public function setUp(): void
     {
-        $this->pdo = new PDO(getenv('SQLITE_DSN'), getenv('SQLITE_USERNAME'), getenv('SQLITE_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new PDO(\getenv('SQLITE_DSN'), \getenv('SQLITE_USERNAME'), \getenv('SQLITE_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 }

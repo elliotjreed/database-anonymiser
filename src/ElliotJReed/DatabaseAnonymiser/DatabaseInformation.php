@@ -87,10 +87,10 @@ class DatabaseInformation
      */
     private function sqliteTableColumns(string $table): array
     {
-        $tables = $this->db->query('PRAGMA table_info("' . $table . '")')->fetchAll();
+        $tablesInfo = $this->db->query('PRAGMA table_info("' . $table . '")')->fetchAll();
         $columns = [];
-        foreach ($tables as $table) {
-            $columns[] = $table['name'];
+        foreach ($tablesInfo as $tableInfo) {
+            $columns[] = $tableInfo['name'];
         }
 
         return $columns;

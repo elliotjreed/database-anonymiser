@@ -19,7 +19,7 @@ class AnonymiserTest extends SqliteTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->anonymiser = new Anonymiser($this->pdo, new Validator($this->pdo, new DatabaseInformation($this->pdo)));
+        $this->anonymiser = new Anonymiser($this->pdo, new Validator(new DatabaseInformation($this->pdo)));
     }
 
     /**
@@ -41,7 +41,7 @@ class AnonymiserTest extends SqliteTestCase
         $this->anonymiser->anonymise($configuration);
         $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(PDO::FETCH_COLUMN);
 
-        $this->assertEquals('anonymised string', $result);
+        $this->assertSame('anonymised string', $result);
     }
 
     /**
@@ -64,8 +64,8 @@ class AnonymiserTest extends SqliteTestCase
         $this->anonymiser->anonymise($configuration);
         $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetch();
 
-        $this->assertEquals('anonymised string', $result['example_column']);
-        $this->assertEquals('second anonymised string', $result['second_example_column']);
+        $this->assertSame('anonymised string', $result['example_column']);
+        $this->assertSame('second anonymised string', $result['second_example_column']);
     }
 
     /**
@@ -149,7 +149,7 @@ class AnonymiserTest extends SqliteTestCase
         $this->anonymiser->anonymise($configuration);
         $result = $this->pdo->query('SELECT * FROM example_table')->fetchAll();
 
-        $this->assertEquals([], $result);
+        $this->assertSame([], $result);
     }
 
     /**

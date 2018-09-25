@@ -4,21 +4,17 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
-use PDO;
 
 class Validator
 {
-    private $pdo;
     private $databaseInformation;
 
     /**
      * Validator constructor.
-     * @param PDO $pdo
      * @param DatabaseInformation $databaseInformation
      */
-    public function __construct(PDO $pdo, DatabaseInformation $databaseInformation)
+    public function __construct(DatabaseInformation $databaseInformation)
     {
-        $this->pdo = $pdo;
         $this->databaseInformation = $databaseInformation;
     }
 
@@ -30,7 +26,7 @@ class Validator
      */
     public function validateConfiguration(array $tablesConfiguration): void
     {
-        $this->checkTablesExist(array_keys($tablesConfiguration));
+        $this->checkTablesExist(\array_keys($tablesConfiguration));
         $this->columnsExist($tablesConfiguration);
     }
 
@@ -44,7 +40,7 @@ class Validator
     {
         $tablesInDatabase = $this->databaseInformation->tables();
         foreach ($tableNames as $tableName) {
-            if (!in_array($tableName, $tablesInDatabase)) {
+            if (!\in_array($tableName, $tablesInDatabase, true)) {
                 throw new ConfigurationFile('Configuration contains table which does not exist in the database: ' . $tableName);
             }
         }
@@ -60,8 +56,8 @@ class Validator
         foreach ($tablesConfiguration as $table => $configuration) {
             if (isset($configuration['columns'])) {
                 $tableColumns = $this->databaseInformation->columns($table);
-                foreach (array_keys($configuration['columns']) as $columnName) {
-                    if (!in_array($columnName, $tableColumns)) {
+                foreach (\array_keys($configuration['columns']) as $columnName) {
+                    if (!\in_array($columnName, $tableColumns, true)) {
                         throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $table . '.' . $columnName);
                     }
                 }

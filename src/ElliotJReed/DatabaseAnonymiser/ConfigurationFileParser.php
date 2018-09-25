@@ -31,11 +31,11 @@ class ConfigurationFileParser
         }
 
         if ($extension === 'json') {
-            return json_decode($this->file->fread($this->file->getSize()), true);
+            return \json_decode($this->file->fread($this->file->getSize()), true);
         }
 
         if ($extension === 'yml' || $extension === 'yaml') {
-            return yaml_parse_file($this->file->getRealPath());
+            return \yaml_parse_file($this->file->getRealPath());
         }
 
         throw new UnsupportedConfigurationFile();

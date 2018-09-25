@@ -20,7 +20,5 @@ $connection = $configuration['database-connection'];
 
 $pdo = new PDO($connection['dsn'], $connection['username'], $connection['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
 
-$configurationValidator = new Validator($pdo, new DatabaseInformation($pdo));
-$anonymiser = (new Anonymiser($pdo, $configurationValidator));
-
-$anonymiser->anonymise($configuration['anonymise']);
+(new Anonymiser($pdo, new Validator(new DatabaseInformation($pdo))))
+    ->anonymise($configuration['anonymise']);

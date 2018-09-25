@@ -16,7 +16,7 @@ class ValidatorTest extends SqliteTestCase
     {
         $this->expectException(ConfigurationFile::class);
 
-        (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => []]);
+        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => []]);
     }
 
     /**
@@ -27,6 +27,6 @@ class ValidatorTest extends SqliteTestCase
         $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
         $this->expectException(ConfigurationFile::class);
 
-        (new Validator($this->pdo, new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
+        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
     }
 }

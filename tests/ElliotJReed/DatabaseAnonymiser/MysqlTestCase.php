@@ -16,6 +16,6 @@ class MysqlTestCase extends TestCase
      */
     public function setUp(): void
     {
-        $this->pdo = new PDO(getenv('MYSQL_DSN'), getenv('MYSQL_USERNAME'), getenv('MYSQL_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $this->pdo = new PDO(\getenv('MYSQL_DSN'), \getenv('MYSQL_USERNAME'), \getenv('MYSQL_PASSWORD'), [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
     }
 }

@@ -56,7 +56,7 @@ class Anonymiser
      */
     private function truncate(string $tableName): void
     {
-        $this->pdo->exec('DELETE FROM ' . $tableName);
+        $this->pdo->exec('DELETE FROM ' . $this->safeTableName($tableName));
     }
 
     /**
@@ -83,7 +83,7 @@ class Anonymiser
      */
     private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
     {
-        $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $tableName);
+        $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $this->safeTableName($tableName));
         $totalRows = (int) $query->fetch(PDO::FETCH_COLUMN);
 
         if ($totalRows >= $numberOfRowsToRetain) {
@@ -99,7 +99,7 @@ class Anonymiser
      */
     private function removeColumns(string $tableName, int $numberOfRowsToRemove): void
     {
-        $query = $this->pdo->prepare('DELETE FROM `' . $tableName . '` LIMIT :limit');
+        $query = $this->pdo->prepare('DELETE FROM ' . $this->safeTableName($tableName) . ' LIMIT :limit');
         $query->bindValue('limit', $numberOfRowsToRemove, PDO::PARAM_INT);
         $query->execute();
     }
@@ -116,7 +116,16 @@ class Anonymiser
             $replacementParameters .= $column . ' = ?, ';
         }
 
-        $query = $this->pdo->prepare('UPDATE `' . $tableName . '` SET ' . trim($replacementParameters, ', '));
-        $query->execute(array_values($columns));
+        $query = $this->pdo->prepare('UPDATE ' . $this->safeTableName($tableName) . ' SET ' . \trim($replacementParameters, ', '));
+        $query->execute(\array_values($columns));
+    }
+
+    /**
+     * @param string $tableName The name of the table to ensure is safe for use in SQL
+     * @return string The safe table name to use in SQL
+     */
+    private function safeTableName(string $tableName): string
+    {
+        return '`' . \str_replace('`', '``', $tableName) . '`';
     }
 }

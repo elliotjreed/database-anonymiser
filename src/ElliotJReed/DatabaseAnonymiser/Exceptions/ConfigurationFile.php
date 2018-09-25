@@ -6,7 +6,7 @@ namespace ElliotJReed\DatabaseAnonymiser\Exceptions;
 use Exception;
 use Throwable;
 
-class ConfigurationFile extends Exception implements Throwable
+class ConfigurationFile extends Exception
 {
     protected $message = 'Invalid configuration.';
 }
