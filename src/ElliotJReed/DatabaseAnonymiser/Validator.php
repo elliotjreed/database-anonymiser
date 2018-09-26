@@ -50,17 +50,29 @@ class Validator
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
      * @return void
      * @throws Exceptions\ConfigurationFile
+     * @throws Exceptions\UnsupportedDatabase
      */
     private function columnsExist(array $tablesConfiguration): void
     {
         foreach ($tablesConfiguration as $table => $configuration) {
             if (isset($configuration['columns'])) {
-                $tableColumns = $this->databaseInformation->columns($table);
-                foreach (\array_keys($configuration['columns']) as $columnName) {
-                    if (!\in_array($columnName, $tableColumns, true)) {
-                        throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $table . '.' . $columnName);
-                    }
-                }
+                $this->columnsExistInTable($table, $configuration['columns']);
+            }
+        }
+    }
+
+    /**
+     * @param $tableInConfiguration
+     * @param $columnsInConfiguration
+     * @throws ConfigurationFile
+     * @throws Exceptions\UnsupportedDatabase
+     */
+    private function columnsExistInTable(string $tableInConfiguration, array $columnsInConfiguration): void
+    {
+        $columnsInDatabaseTable = $this->databaseInformation->columns($tableInConfiguration);
+        foreach (\array_keys($columnsInConfiguration) as $columnInConfiguration) {
+            if (!\in_array($columnInConfiguration, $columnsInDatabaseTable, true)) {
+                throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $tableInConfiguration . '.' . $columnInConfiguration);
             }
         }
     }

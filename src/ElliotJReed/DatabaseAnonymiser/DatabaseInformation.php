@@ -9,6 +9,7 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 class DatabaseInformation
 {
     private $pdo;
+    private $databaseDriver;
 
     /**
      * DatabaseInformation constructor.
@@ -17,6 +18,7 @@ class DatabaseInformation
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
+        $this->databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     }
 
     /**
@@ -25,9 +27,8 @@ class DatabaseInformation
      */
     public function tables(): array
     {
-        $query = $this->pdo->query($this->tableListSql());
-
-        return $query->fetchAll(PDO::FETCH_COLUMN);
+        return $this->pdo->query($this->tableListSql())
+            ->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /**
@@ -37,14 +38,13 @@ class DatabaseInformation
      */
     public function columns(string $tableName): array
     {
-        $databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
-        switch ($databaseDriver) {
+        switch ($this->databaseDriver) {
             case 'sqlite':
                 return $this->sqliteTableColumns($tableName);
             case 'mysql':
                 return $this->ansiTableColumns($tableName);
             default:
-                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $this->databaseDriver);
         }
     }
 
@@ -54,15 +54,14 @@ class DatabaseInformation
      */
     private function tableListSql(): string
     {
-        $databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
-        switch ($databaseDriver) {
+        switch ($this->databaseDriver) {
             case 'sqlite':
                 return 'SELECT `name` FROM sqlite_master WHERE type = "table"';
             case 'mysql':
                 return 'SELECT TABLE_NAME
                   FROM INFORMATION_SCHEMA.Tables';
             default:
-                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
+                throw new UnsupportedDatabase('Unsupported database driver: ' . $this->databaseDriver);
         }
     }
 

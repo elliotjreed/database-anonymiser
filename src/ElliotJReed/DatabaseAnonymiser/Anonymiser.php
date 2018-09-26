@@ -60,7 +60,11 @@ class Anonymiser
      */
     private function truncate(string $tableName): void
     {
-        $this->pdo->exec('DELETE FROM ' . $this->safeTableName($tableName));
+        if ($this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+            $this->pdo->exec('TRUNCATE TABLE ' . $this->safeTableName($tableName));
+        } else {
+            $this->pdo->exec('DELETE FROM ' . $this->safeTableName($tableName));
+        }
     }
 
     /**

@@ -25,6 +25,7 @@ class SqliteDatabaseInformationTest extends SqliteTestCase
 
         $this->assertSame(['example_table'], $info);
     }
+
     /**
      * @return void
      */
