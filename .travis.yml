@@ -13,15 +13,19 @@ git:
 
 before_install:
   - mkdir -p ./coverage
-  - printf "\n" | pecl install yaml
-  - echo "extension = yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - docker run --name=db -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=test -d mariadb
+  - docker pull testsuite
+  - docker run -v $PWD:/app testsuite composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
+  - docker run -v $PWD:/app testsuite phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
+  - docker run -v $PWD:/app testsuite phpunit -c phpunit.xml --testsuite mysql
+
 
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 script:
-  - php vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - php vendor/bin/phpunit -c phpunit.xml --testsuite all
+  - phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
+  - phpunit -c phpunit.xml --testsuite mysql
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
