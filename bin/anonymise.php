@@ -26,6 +26,6 @@ try {
     echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . PHP_EOL;
     exit(0);
 } catch (Exception $exception) {
-    $exception->getMessage();
+    echo $exception->getMessage();
     exit(1);
 }
