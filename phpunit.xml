@@ -4,9 +4,9 @@
         <log type="coverage-clover" target="coverage/clover.xml"/>
     </logging>
     <php>
-        <env name="MYSQL_DSN" value="mysql:host=db;dbname=test"/>
-        <env name="MYSQL_USERNAME" value="root"/>
-        <env name="MYSQL_PASSWORD" value="test"/>
+        <env name="DB_DSN" value="mysql:host=db;dbname=test"/>
+        <env name="DB_USERNAME" value="root"/>
+        <env name="DB_PASSWORD" value="test"/>
     </php>
     <testsuites>
         <testsuite name="all">
