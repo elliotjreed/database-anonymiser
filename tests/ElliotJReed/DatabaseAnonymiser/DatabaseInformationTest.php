@@ -5,7 +5,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 
-class MysqlDatabaseInformationTest extends MysqlTestCase
+class DatabaseInformationTest extends DatabaseTestCase
 {
     /**
      * @return void
@@ -14,6 +14,14 @@ class MysqlDatabaseInformationTest extends MysqlTestCase
     {
         parent::setUp();
         $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17), second_example_column VARCHAR(24))');
+    }
+
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        $this->pdo->exec('DROP TABLE example_table');
     }
 
     /**

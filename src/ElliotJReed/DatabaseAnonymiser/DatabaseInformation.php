@@ -58,8 +58,7 @@ class DatabaseInformation
             case 'sqlite':
                 return 'SELECT `name` FROM sqlite_master WHERE type = "table"';
             case 'mysql':
-                return 'SELECT TABLE_NAME
-                  FROM INFORMATION_SCHEMA.Tables';
+                return 'SHOW TABLES';
             default:
                 throw new UnsupportedDatabase('Unsupported database driver: ' . $this->databaseDriver);
         }

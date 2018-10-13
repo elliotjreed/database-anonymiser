@@ -9,7 +9,7 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use PDO;
 
-class AnonymiserTest extends SqliteTestCase
+class AnonymiserTest extends DatabaseTestCase
 {
     /** @var Anonymiser */
     private $anonymiser;
@@ -21,6 +21,14 @@ class AnonymiserTest extends SqliteTestCase
     {
         parent::setUp();
         $this->anonymiser = new Anonymiser($this->pdo, new DatabaseConfiguration($this->pdo), new Validator(new DatabaseInformation($this->pdo)));
+    }
+
+    /**
+     * @return void
+     */
+    public function tearDown(): void
+    {
+        $this->pdo->exec('DROP TABLE example_table');
     }
 
     /**

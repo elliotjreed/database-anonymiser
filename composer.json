@@ -39,8 +39,8 @@
       "@phpunit",
       "@phpcs"
     ],
-    "phpunit": "php vendor/bin/phpunit -c phpunit.xml --coverage-text --testsuite sqlite",
-    "coverage": "php vendor/bin/phpunit -c phpunit.xml --coverage-html ./coverage --testsuite sqlite",
-    "phpcs": "php vendor/bin/phpcs --standard=ruleset.xml"
+    "phpunit": "DB_DSN='sqlite::memory:' DB_USERNAME='' DB_PASSWORD='' vendor/bin/phpunit -c phpunit.xml --coverage-text --testsuite sqlite",
+    "coverage": "DB_DSN='sqlite::memory:' DB_USERNAME='' DB_PASSWORD='' vendor/bin/phpunit -c phpunit.xml --coverage-html ./coverage --testsuite sqlite",
+    "phpcs": "vendor/bin/phpcs --standard=ruleset.xml"
   }
 }

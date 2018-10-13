@@ -15,17 +15,10 @@ before_install:
   - mkdir -p ./coverage
   - docker run --name=db -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=test -d mariadb
   - docker pull elliotjreed/php-test-runner:dev
-  - docker run -v $PWD:/app elliotjreed/php-test-runner:dev composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
-  - docker run -v $PWD:/app elliotjreed/php-test-runner:dev phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - docker run -v $PWD:/app elliotjreed/php-test-runner:dev phpunit -c phpunit.xml --testsuite mysql
-
 
 install:
-  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
+  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:dev composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 script:
-  - phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - phpunit -c phpunit.xml --testsuite mysql
-
-after_success:
-  - travis_retry php vendor/bin/php-coveralls 
+  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:dev phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
+  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:dev phpunit -c phpunit.xml --testsuite mysql

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser) [![Coverage Status](https://coveralls.io/repos/github/elliotjreed/database-anonymiser/badge.svg)](https://coveralls.io/github/elliotjreed/database-anonymiser)
+[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser)
 
 # PHP Database Anonymiser
 
@@ -28,6 +28,8 @@ composer install
 
 ## Running the tests
 
+There are two test suites defined in [phpunit.xml](phpunit.xml): SQLite and MySQL. The SQLite test suite will run an instance of in-memory SQLite for faster test-driven development and ensuring core functionality. The MYSQL test suite will require a MySQL test database to run, but does account for the slight differences in syntax between SQLite and MySQL (for example, `SHOW TABLES` works in MySQL but not SQLite) - the application itself will account for these differences automatically, but for testing purposes they must be considered independently.
+
 To run the unit tests and code sniffer checks, run:
 
 ```bash
@@ -47,7 +49,20 @@ composer run-script phpcs
 ```
 
 
-## Deployment
+## Usage
+
+### Docker
+
+This application has a Docker image available at [hub.docker.com/r/elliotjreed/database-anonymiser](https://hub.docker.com/r/elliotjreed/database-anonymiser/).
+
+See the _Configuration_ section below for details on how to set up the database connection and table configuration.
+
+This is perhaps the easiest way of running the application:
+
+```bash
+docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest /app/bin/anonymise /app/config.yml
+```
+
 
 To add the package to a project, add the package as a dependency with Composer. In your `composer.json` file, add:
 
@@ -63,6 +78,39 @@ To add the package to a project, add the package as a dependency with Composer. 
 ],
 ```
 
+
+## Configuration
+
+The application will take either a YAML, JSON, or PHP array configuration file.
+
+The first section should be the database connection information, taking in a PHP PDO DSN string - currently MySQL and SQLite are supported, although Postgres should work as well.
+
+For the actual anonymisation configuration you can provide a table name as the key, then either `retain` followed by the number of rows you wish to keep, `remove` followed by the number of rows you wish to remove from the table, or `truncate` to remove all rows from a table.
+
+You can also specify `columns` you wish to have the values replaced independently or alongside `retain` or `remove`. For each column specify the column name as the key and the value you wish to have the current value replaced with.
+
+```
+database-connection:
+  dsn: "mysql:host=localhost;dbname=mydatabasename;charset=utf8;"
+  username: "databaseusername"
+  password: "databasepassword"
+  database: "databasename"
+
+anonymise:
+  table_a:
+    truncate: true
+
+  table_b:
+    retain: 20
+    columns:
+      column_a: "Will be replaced with this value"
+
+  table_c:
+    remove: 30
+    columns:
+      column_a: "Will be replaced with this value"
+      column_b: "Will be replaced with this value"
+```
 
 ## Built With
 
