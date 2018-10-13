@@ -14,12 +14,10 @@
         </testsuite>
         <testsuite name="sqlite">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
-            <exclude>./tests/ElliotJReed/DatabaseAnonymiser/MysqlDatabaseInformationTest.php</exclude>
             <exclude>./tests/ElliotJReed/DatabaseAnonymiser/MysqlDatabaseConfigurationTest.php</exclude>
         </testsuite>
         <testsuite name="mysql">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
-            <exclude>./tests/ElliotJReed/DatabaseAnonymiser/SqliteDatabaseInformationTest.php</exclude>
             <exclude>./tests/ElliotJReed/DatabaseAnonymiser/SqliteDatabaseConfigurationTest.php</exclude>
         </testsuite>
     </testsuites>
