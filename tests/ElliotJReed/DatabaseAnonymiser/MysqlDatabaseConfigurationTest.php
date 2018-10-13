@@ -6,7 +6,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 use PDOException;
 
-class MysqlDatabaseConfigurationTest extends MysqlTestCase
+class MysqlDatabaseConfigurationTest extends DatabaseTestCase
 {
     /**
      * @return void
