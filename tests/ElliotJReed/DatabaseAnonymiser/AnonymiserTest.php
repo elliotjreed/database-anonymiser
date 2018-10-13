@@ -26,7 +26,7 @@ class AnonymiserTest extends DatabaseTestCase
     /**
      * @return void
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE example_table');
     }

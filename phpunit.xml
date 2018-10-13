@@ -19,6 +19,7 @@
         <testsuite name="mysql">
             <directory>./tests/ElliotJReed/DatabaseAnonymiser/</directory>
             <exclude>./tests/ElliotJReed/DatabaseAnonymiser/SqliteDatabaseConfigurationTest.php</exclude>
+            <exclude>./tests/ElliotJReed/DatabaseAnonymiser/MysqlDatabaseConfigurationTest.php</exclude>
         </testsuite>
     </testsuites>
     <filter>
