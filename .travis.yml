@@ -6,6 +6,10 @@ php:
 git:
   depth: 1
 
+before_install:
+  - printf "\n" | pecl install yaml
+  - echo "extension=yaml.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
 install:
   - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
