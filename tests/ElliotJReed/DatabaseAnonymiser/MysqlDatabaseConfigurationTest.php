@@ -30,6 +30,17 @@ class MysqlDatabaseConfigurationTest extends DatabaseTestCase
     /**
      * @return void
      */
+    public function tearDown()
+    {
+        $this->pdo->exec(
+            'DROP TABLE example_table;
+          DROP TABLE example_second_table'
+        );
+    }
+
+    /**
+     * @return void
+     */
     public function testItThrowsExceptionByDefaultIfForeignKeyChecksAreEnabled(): void
     {
         $this->expectException(PDOException::class);

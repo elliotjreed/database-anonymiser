@@ -12,11 +12,28 @@ class ValidatorTest extends DatabaseTestCase
     /**
      * @return void
      */
+    public function setUp(): void
+    {
+        parent::setUp();
+        $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
+    }
+
+    /**
+     * @return void
+     */
+    public function tearDown()
+    {
+        $this->pdo->exec('DROP TABLE example_table');
+    }
+
+    /**
+     * @return void
+     */
     public function testItThrowsExceptionWhenTableDoesNotExistInDatabase(): void
     {
         $this->expectException(ConfigurationFile::class);
 
-        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => []]);
+        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['fake_table' => []]);
     }
 
     /**
@@ -24,7 +41,6 @@ class ValidatorTest extends DatabaseTestCase
      */
     public function testItThrowsExceptionWhenColumnDoesNotExistInTable(): void
     {
-        $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
         $this->expectException(ConfigurationFile::class);
 
         (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);

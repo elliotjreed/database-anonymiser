@@ -19,6 +19,14 @@ class MysqlDatabaseInformationTest extends DatabaseTestCase
     /**
      * @return void
      */
+    public function tearDown()
+    {
+        $this->pdo->exec('DROP TABLE example_table');
+    }
+
+    /**
+     * @return void
+     */
     public function testItReturnsArrayOfTables(): void
     {
         $info = (new DatabaseInformation($this->pdo))->tables();
