@@ -39,9 +39,9 @@ RUN cd /app && \
     /app/composer install --no-progress --no-interaction --classmap-authoritative --no-suggest --no-dev && \
     rm -f /app/composer /app/composer.json /app/composer.lock && \
     cd /app/vendor && \
-    find -type f -iname '*readme*'  -exec rm -vf {} + && \
-    find -type f -iname '*changelog*'  -exec rm -vf {} + && \
-    find -type f -iname '*license*' -exec rm -vf {} +
+    find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*changelog*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*license*" ! -iname "*.php" \) -exec rm -vf {} +
 
 VOLUME ["/app"]
 ENTRYPOINT ["php"]
