@@ -5,7 +5,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 
-class MysqlDatabaseConfigurationTest extends DatabaseTestCase
+final class MysqlDatabaseConfigurationTest extends DatabaseTestCase
 {
     /**
      * @return void

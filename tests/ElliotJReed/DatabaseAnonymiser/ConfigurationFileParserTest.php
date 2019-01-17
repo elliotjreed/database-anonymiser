@@ -8,7 +8,7 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedConfigurationFile;
 use PHPUnit\Framework\TestCase;
 use SplFileObject;
 
-class ConfigurationFileParserTest extends TestCase
+final class ConfigurationFileParserTest extends TestCase
 {
     /**
      * @return void

@@ -6,7 +6,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 use PDOException;
 
-class SqliteDatabaseConfigurationTest extends DatabaseTestCase
+final class SqliteDatabaseConfigurationTest extends DatabaseTestCase
 {
     /**
      * @return void

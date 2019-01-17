@@ -7,7 +7,7 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 
-class ValidatorTest extends DatabaseTestCase
+final class ValidatorTest extends DatabaseTestCase
 {
     /**
      * @return void
