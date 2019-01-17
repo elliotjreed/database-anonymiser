@@ -6,7 +6,7 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 use PHPUnit\Framework\TestCase;
 use PDO;
 
-class DatabaseTestCase extends TestCase
+abstract class DatabaseTestCase extends TestCase
 {
     /** @var PDO */
     protected $pdo;
