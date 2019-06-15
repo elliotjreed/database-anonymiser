@@ -16,6 +16,7 @@ RUN apk add --update icu yaml git openssh-client && \
         $PHPIZE_DEPS \
         zlib-dev \
         bzip2-dev \
+        libzip-dev \
         sqlite-dev \
         icu-dev \
         yaml-dev && \
