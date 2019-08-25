@@ -4,13 +4,13 @@
   "authors": [
     {
       "name": "Elliot J. Reed",
-      "email": "git-contact@elliotjreed.com",
+      "email": "database-anonymiser-development@elliotjreed.com",
       "homepage": "https://www.elliotjreed.com",
       "role": "Developer"
     }
   ],
   "type": "project",
-  "description": "",
+  "description": "A PHP application to anonymise database data based on a YAML, JSON, or PHP array configuration.",
   "autoload": {
     "psr-4": {
       "ElliotJReed\\DatabaseAnonymiser\\": "src/ElliotJReed/DatabaseAnonymiser/"
