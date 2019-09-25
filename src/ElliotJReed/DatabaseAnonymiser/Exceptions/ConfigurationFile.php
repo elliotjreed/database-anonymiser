@@ -5,7 +5,7 @@ namespace ElliotJReed\DatabaseAnonymiser\Exceptions;
 
 use Exception;
 
-class ConfigurationFile extends Exception
+final class ConfigurationFile extends Exception
 {
     protected $message = 'Invalid configuration.';
 }
