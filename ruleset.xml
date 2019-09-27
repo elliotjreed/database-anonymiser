@@ -3,6 +3,7 @@
     <description>Coding standards for projects on github.com/elliotjreed.</description>
     <arg value="p"/>
     <arg name="colors"/>
+    <rule ref="PSR12"/>
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/>
     </rule>
