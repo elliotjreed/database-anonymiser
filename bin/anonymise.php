@@ -1,10 +1,12 @@
 #!/usr/bin/env php
 <?php
+
 declare(strict_types=1);
 
 use ElliotJReed\DatabaseAnonymiser\ConfigurationFileParser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
+use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 use ElliotJReed\DatabaseAnonymiser\Anonymiser;
 
@@ -25,7 +27,7 @@ try {
 
     echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . PHP_EOL;
     exit(0);
-} catch (\ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile $exception) {
+} catch (ConfigurationFile $exception) {
     echo $exception->getMessage();
 } catch (Exception $exception) {
     echo $exception->getMessage();

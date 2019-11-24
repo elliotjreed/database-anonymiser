@@ -63,17 +63,17 @@ class Validator
     }
 
     /**
-     * @param $tableInConfiguration
-     * @param $columnsInConfiguration
+     * @param $table
+     * @param $columns
      * @throws ConfigurationFile
      * @throws Exceptions\UnsupportedDatabase
      */
-    private function columnsExistInTable(string $tableInConfiguration, array $columnsInConfiguration): void
+    private function columnsExistInTable(string $table, array $columns): void
     {
-        $columnsInDatabaseTable = $this->databaseInformation->columns($tableInConfiguration);
-        foreach (\array_keys($columnsInConfiguration) as $columnInConfiguration) {
+        $columnsInDatabaseTable = $this->databaseInformation->columns($table);
+        foreach (\array_keys($columns) as $columnInConfiguration) {
             if (!\in_array($columnInConfiguration, $columnsInDatabaseTable, true)) {
-                throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $tableInConfiguration . '.' . $columnInConfiguration);
+                throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $table . '.' . $columnInConfiguration);
             }
         }
     }

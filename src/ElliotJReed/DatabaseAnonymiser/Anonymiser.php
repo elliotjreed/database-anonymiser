@@ -120,12 +120,12 @@ class Anonymiser
      */
     private function replaceRowValues(string $tableName, array $columns): void
     {
-        $replacementParameters = '';
+        $parameters = '';
         foreach ($columns as $column => $replacementValue) {
-            $replacementParameters .= $column . ' = ?, ';
+            $parameters .= $column . ' = ?, ';
         }
 
-        $query = $this->pdo->prepare('UPDATE ' . $this->safeTableName($tableName) . ' SET ' . \trim($replacementParameters, ', '));
+        $query = $this->pdo->prepare('UPDATE ' . $this->safeTableName($tableName) . ' SET ' . \trim($parameters, ', '));
         $query->execute(\array_values($columns));
     }
 
