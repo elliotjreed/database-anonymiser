@@ -13,9 +13,9 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 This package requires:
- - PHP 7.1+
- - [Composer](https://getcomposer.org/)
 
+  - PHP 7.1+
+  - [Composer](https://getcomposer.org/)
 
 ### Installing
 
@@ -24,7 +24,6 @@ To install the required dependencies, run:
 ```bash
 composer install
 ```
-
 
 ## Running the tests
 
@@ -48,7 +47,6 @@ To run the code sniffer, run:
 composer run-script phpcs
 ```
 
-
 ## Usage
 
 ### Docker
@@ -62,7 +60,6 @@ This is perhaps the easiest way of running the application:
 ```bash
 docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest /app/bin/anonymise /app/config.yml
 ```
-
 
 To add the package to a project, add the package as a dependency with Composer. In your `composer.json` file, add:
 
@@ -78,7 +75,6 @@ To add the package to a project, add the package as a dependency with Composer. 
 ],
 ```
 
-
 ## Configuration
 
 The application will take either a YAML, JSON, or PHP array configuration file.
@@ -89,7 +85,7 @@ For the actual anonymisation configuration you can provide a table name as the k
 
 You can also specify `columns` you wish to have the values replaced independently or alongside `retain` or `remove`. For each column specify the column name as the key and the value you wish to have the current value replaced with.
 
-```
+```text
 database-connection:
   dsn: "mysql:host=localhost;dbname=mydatabasename;charset=utf8;"
   username: "databaseusername"
@@ -114,6 +110,6 @@ anonymise:
 
 ## Built With
 
-* [PHP](https://secure.php.net/)
-* [PHPUnit](https://phpunit.de/) - Unit Testing
-* [Composer](https://getcomposer.org/) - Dependency Management
+  - [PHP](https://secure.php.net/)
+  - [PHPUnit](https://phpunit.de/) - Unit Testing
+  - [Composer](https://getcomposer.org/) - Dependency Management
