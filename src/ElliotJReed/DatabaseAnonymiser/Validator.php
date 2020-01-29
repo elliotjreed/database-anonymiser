@@ -8,7 +8,7 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 
 class Validator
 {
-    private $databaseInformation;
+    private DatabaseInformation $databaseInformation;
 
     /**
      * Validator constructor.

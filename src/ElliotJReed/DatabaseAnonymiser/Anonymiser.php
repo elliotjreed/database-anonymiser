@@ -9,9 +9,9 @@ use PDO;
 
 class Anonymiser
 {
-    private $pdo;
-    private $configuration;
-    private $validator;
+    private PDO $pdo;
+    private DatabaseConfiguration $configuration;
+    private Validator $validator;
 
     /**
      * Anonymiser constructor.

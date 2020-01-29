@@ -9,8 +9,7 @@ use PDO;
 
 abstract class DatabaseTestCase extends TestCase
 {
-    /** @var PDO */
-    protected $pdo;
+    protected PDO $pdo;
 
     /**
      * @return void

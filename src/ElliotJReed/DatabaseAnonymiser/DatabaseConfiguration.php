@@ -9,7 +9,7 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseConfiguration
 {
-    private $pdo;
+    private PDO $pdo;
 
     /**
      * DatabaseInformation constructor.

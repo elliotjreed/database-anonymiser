@@ -1,6 +1,6 @@
 FROM php:alpine
 
-LABEL Description="Database anonymisation application. Takes either a JSON, YAML, or PHP configuration file." Vendor="Elliot J. Reed" Version="1.0"
+LABEL Description="Database anonymisation application. Takes either a JSON, YAML, or PHP configuration file." Vendor="Elliot J. Reed" Version="2.0"
 
 ENV PATH="/app/bin:${PATH}"
 
@@ -16,11 +16,9 @@ RUN apk add --update icu yaml git openssh-client && \
         $PHPIZE_DEPS \
         zlib-dev \
         bzip2-dev \
-        libzip-dev \
-        sqlite-dev \
         icu-dev \
         yaml-dev && \
-    docker-php-ext-install bcmath pdo_mysql pdo_sqlite zip && \
+    docker-php-ext-install bcmath pdo_mysql && \
     docker-php-ext-configure intl && \
     docker-php-ext-install intl && \
     pecl install yaml && \
@@ -42,6 +40,7 @@ RUN cd /app && \
     cd /app/vendor && \
     find . -type f \( -iname "*readme*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*changelog*" ! -iname "*.php" \) -exec rm -vf {} + && \
+    find . -type f \( -iname "*contributing*" ! -iname "*.php" \) -exec rm -vf {} + && \
     find . -type f \( -iname "*license*" ! -iname "*.php" \) -exec rm -vf {} +
 
 VOLUME ["/app"]

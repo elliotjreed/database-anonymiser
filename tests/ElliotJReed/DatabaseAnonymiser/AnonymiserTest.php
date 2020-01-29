@@ -13,7 +13,7 @@ use PDO;
 final class AnonymiserTest extends DatabaseTestCase
 {
     /** @var Anonymiser */
-    private $anonymiser;
+    private Anonymiser $anonymiser;
 
     /**
      * @return void

@@ -9,7 +9,7 @@ use SplFileObject;
 
 class ConfigurationFileParser
 {
-    private $file;
+    private SplFileObject $file;
 
     /**
      * ConfigurationFileParser constructor.

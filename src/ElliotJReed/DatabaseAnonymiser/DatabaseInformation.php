@@ -9,8 +9,8 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseInformation
 {
-    private $pdo;
-    private $databaseDriver;
+    private PDO $pdo;
+    private string $databaseDriver;
 
     /**
      * DatabaseInformation constructor.
