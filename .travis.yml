@@ -15,7 +15,7 @@ before_install:
   - mysql -e 'CREATE DATABASE anonymiser;'
 
 install:
-  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
+  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress --ignore-platform-reqs
 
 script:
   - vendor/bib/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
