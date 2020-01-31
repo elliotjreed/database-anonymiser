@@ -12,14 +12,11 @@ git:
   depth: 1
 
 before_install:
-  - mkdir -p ./coverage
-  - docker network create dbnetwork
-  - docker run --name=db --network=dbnetwork -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=test -d mariadb
-  - docker pull elliotjreed/php-test-runner:latest
+  - mysql -e 'CREATE DATABASE anonymiser;'
 
 install:
-  - docker run --link=db --network=dbnetwork -v $PWD:/app elliotjreed/php-test-runner:latest composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
+  - composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 script:
-  - docker run --link=db --network=dbnetwork -v $PWD:/app elliotjreed/php-test-runner:latest phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - docker run --link=db --network=dbnetwork -v $PWD:/app elliotjreed/php-test-runner:latest phpunit -c phpunit.xml --testsuite mysql
+  - vendor/bib/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
+  - vendor/bin/phpunit -c phpunit.xml --testsuite mysql
