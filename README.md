@@ -58,7 +58,7 @@ See the _Configuration_ section below for details on how to set up the database 
 This is perhaps the easiest way of running the application:
 
 ```bash
-docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest /app/bin/anonymise /app/config.yml
+docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest anonymise /app/config.yml
 ```
 
 To add the package to a project, add the package as a dependency with Composer. In your `composer.json` file, add:
