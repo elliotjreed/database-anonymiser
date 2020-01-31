@@ -4,6 +4,7 @@ language: php
 
 services:
   - docker
+  - mysql
 
 php:
   - 7.4
