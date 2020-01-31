@@ -18,7 +18,7 @@ if (!isset($argv[1])) {
 }
 
 try {
-    $configuration = (new ConfigurationFileParser(new SplFileObject($argv[1], 'r')))->toArray();
+    $configuration = (new ConfigurationFileParser(new SplFileObject($argv[1], 'rb')))->toArray();
     $connection = $configuration['database-connection'];
 
     $pdo = new PDO($connection['dsn'], $connection['username'], $connection['password'], [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);

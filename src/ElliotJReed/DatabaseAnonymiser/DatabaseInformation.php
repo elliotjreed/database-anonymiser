@@ -28,7 +28,8 @@ class DatabaseInformation
      */
     public function tables(): array
     {
-        return $this->pdo->query($this->tableListSql())
+        return $this->pdo
+            ->query($this->tableListSql())
             ->fetchAll(PDO::FETCH_COLUMN);
     }
 
