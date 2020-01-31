@@ -14,11 +14,11 @@ git:
 before_install:
   - mkdir -p ./coverage
   - docker run --name=db -e MYSQL_ROOT_PASSWORD=test -e MYSQL_DATABASE=test -d mariadb
-  - docker pull elliotjreed/php-test-runner:dev
+  - docker pull elliotjreed/php-test-runner:latest
 
 install:
   - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:latest composer install --no-interaction --classmap-authoritative --no-suggest --no-progress
 
 script:
-  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:dev phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:dev phpunit -c phpunit.xml --testsuite mysql
+  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:latest phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
+  - docker run --link=db -v $PWD:/app elliotjreed/php-test-runner:latest phpunit -c phpunit.xml --testsuite mysql
