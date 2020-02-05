@@ -76,7 +76,7 @@ class Validator
     /**
      * @param $table
      * @param $columns
-     * @throws ConfigurationFile
+     * @return array
      * @throws Exceptions\UnsupportedDatabase
      */
     private function columnsExistInTable(string $table, array $columns): array
