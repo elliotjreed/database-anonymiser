@@ -55,10 +55,22 @@ This application has a Docker image available at [hub.docker.com/r/elliotjreed/d
 
 See the _Configuration_ section below for details on how to set up the database connection and table configuration.
 
-This is perhaps the easiest way of running the application:
+### Anonymising
+
+To run the anonymisation application, run:
 
 ```bash
 docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest anonymise /app/config.yml
+```
+
+Please note: the anonymiser will first check whether all of the tables and columns specified in your configuration file exists. If one or more tables or columns do not exist the application will exit and will provide a message detailing the issue(s). To validate the configuration prior to running the anonymisation application, see below.
+
+### Validating
+
+To validate the configuration file and ensure all specified tables and columns exists in the database, run:
+
+```bash
+docker run -v $PWD/config.yml:/app/config.yml elliotjreed/database-anonymiser:latest validate /app/config.yml
 ```
 
 To add the package to a project, add the package as a dependency with Composer. In your `composer.json` file, add:
