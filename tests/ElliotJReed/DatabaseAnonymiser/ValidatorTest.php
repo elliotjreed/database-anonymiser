@@ -16,7 +16,7 @@ final class ValidatorTest extends DatabaseTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17))');
+        $this->pdo->exec('CREATE TABLE table_which_exists (column_which_exists VARCHAR(17))');
     }
 
     /**
@@ -24,7 +24,7 @@ final class ValidatorTest extends DatabaseTestCase
      */
     public function tearDown(): void
     {
-        $this->pdo->exec('DROP TABLE example_table');
+        $this->pdo->exec('DROP TABLE table_which_exists');
     }
 
     /**
@@ -33,9 +33,9 @@ final class ValidatorTest extends DatabaseTestCase
     public function testItReturnsAnArrayOfTableWhichDoNotExistInDatabase(): void
     {
         $this->expectException(ConfigurationFile::class);
-        $this->expectExceptionMessage('Configuration contains tables which do not exist in the database: fake_table');
+        $this->expectExceptionMessage('Configuration contains tables and / or columns which do not exist: fake_table');
 
-        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['fake_table' => []]);
+        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['fake_table' => [], 'table_which_exists' => []]);
     }
 
     /**
@@ -44,8 +44,8 @@ final class ValidatorTest extends DatabaseTestCase
     public function testItThrowsExceptionWhenColumnDoesNotExistInTable(): void
     {
         $this->expectException(ConfigurationFile::class);
-        $this->expectExceptionMessage('Configuration contains columns which do not exist: example_table.fake_column');
+        $this->expectExceptionMessage('Configuration contains tables and / or columns which do not exist: table_which_exists.fake_column');
 
-        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
+        (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['table_which_exists' => ['columns' => ['column_which_exists' => '', 'fake_column' => '', 'fake_column_2' => '']]]);
     }
 }

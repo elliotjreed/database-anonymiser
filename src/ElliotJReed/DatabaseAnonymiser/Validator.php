@@ -22,64 +22,58 @@ class Validator
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
      * @return void
-     * @throws Exceptions\ConfigurationFile
      * @throws Exceptions\UnsupportedDatabase
+     * @throws ConfigurationFile
      */
     public function validateConfiguration(array $tablesConfiguration): void
     {
-        $this->checkTablesExist(\array_keys($tablesConfiguration));
-        $this->columnsExist($tablesConfiguration);
-    }
+        $invalidTables = $this->invalidTables($tablesConfiguration);
 
-    /**
-     * @param array $tableNames An array of table names
-     * @return void
-     * @throws Exceptions\UnsupportedDatabase
-     * @throws Exceptions\ConfigurationFile
-     */
-    private function checkTablesExist(array $tableNames): void
-    {
-        $tablesInDatabase = $this->databaseInformation->tables();
-        $tablesNotInDatabase = [];
-
-        foreach ($tableNames as $tableName) {
-            if (!\in_array($tableName, $tablesInDatabase, true)) {
-                $tablesNotInDatabase[] = $tableName;
-            }
-        }
-
-        if (!empty($tablesNotInDatabase)) {
-            throw new ConfigurationFile('Configuration contains tables which do not exist in the database: ' . \implode(', ', $tablesNotInDatabase));
+        if (!empty($invalidTables)) {
+            throw new ConfigurationFile('Configuration contains tables and / or columns which do not exist: ' . \implode(', ', $invalidTables));
         }
     }
 
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
-     * @return void
-     * @throws Exceptions\ConfigurationFile
+     * @return array An array of tables and / or columns which do not exist in the database
      * @throws Exceptions\UnsupportedDatabase
      */
-    private function columnsExist(array $tablesConfiguration): void
+    private function invalidTables(array $tablesConfiguration): array
     {
-        $columnsNotInTable = [];
-        foreach ($tablesConfiguration as $table => $configuration) {
-            if (isset($configuration['columns'])) {
-                $columnsNotInTable[] = \implode(', ', $this->columnsExistInTable($table, $configuration['columns']));
+        $tablesInDatabase = $this->databaseInformation->tables();
+        $notInDatabase = [];
+        foreach ($tablesConfiguration as $tableName => $configuration) {
+            if (!$this->tableInDatabase($tableName, $tablesInDatabase)) {
+                $notInDatabase[] = $tableName;
+            } elseif (isset($configuration['columns'])) {
+                $columnsNotInTable = $this->columnsNotInTable($tableName, $configuration['columns']);
+                if (!empty($columnsNotInTable)) {
+                    $notInDatabase[] = \implode(', ', $columnsNotInTable);
+                }
             }
         }
 
-        if (!empty($columnsNotInTable)) {
-            throw new ConfigurationFile('Configuration contains columns which do not exist: ' . \implode(', ', $columnsNotInTable));
-        }
+        return $notInDatabase;
     }
 
     /**
-     * @param $table
-     * @param $columns
-     * @return array
+     * @param string $table The database table to check
+     * @param array $tablesInDatabase An array of tables which exist in the database
+     * @return bool
+     */
+    private function tableInDatabase(string $table, array $tablesInDatabase): bool
+    {
+        return \in_array($table, $tablesInDatabase, true);
+    }
+
+    /**
+     * @param string $table The database table
+     * @param array $columns The columns to check whether or not they exists in the table
+     * @return array An array of columns which do not exist in the table
      * @throws Exceptions\UnsupportedDatabase
      */
-    private function columnsExistInTable(string $table, array $columns): array
+    private function columnsNotInTable(string $table, array $columns): array
     {
         $columnsInDatabaseTable = $this->databaseInformation->columns($table);
         $columnsNotInTable = [];
