@@ -31,5 +31,6 @@ try {
     echo $exception->getMessage() . PHP_EOL;
 } catch (Exception $exception) {
     echo $exception->getMessage() . PHP_EOL;
-    exit(1);
 }
+
+exit(1);
