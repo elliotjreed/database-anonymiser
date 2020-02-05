@@ -28,8 +28,8 @@ try {
     echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . PHP_EOL;
     exit(0);
 } catch (ConfigurationFile $exception) {
-    echo $exception->getMessage();
+    echo $exception->getMessage() . PHP_EOL;
 } catch (Exception $exception) {
-    echo $exception->getMessage();
+    echo $exception->getMessage() . PHP_EOL;
     exit(1);
 }

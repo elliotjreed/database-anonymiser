@@ -40,10 +40,16 @@ class Validator
     private function checkTablesExist(array $tableNames): void
     {
         $tablesInDatabase = $this->databaseInformation->tables();
+        $tablesNotInDatabase = [];
+
         foreach ($tableNames as $tableName) {
             if (!\in_array($tableName, $tablesInDatabase, true)) {
-                throw new ConfigurationFile('Configuration contains table which does not exist in the database: ' . $tableName);
+                $tablesNotInDatabase[] = $tableName;
             }
+        }
+
+        if (!empty($tablesNotInDatabase)) {
+            throw new ConfigurationFile('Configuration contains tables which do not exist in the database: ' . \implode(', ', $tablesNotInDatabase));
         }
     }
 
@@ -55,10 +61,15 @@ class Validator
      */
     private function columnsExist(array $tablesConfiguration): void
     {
+        $columnsNotInTable = [];
         foreach ($tablesConfiguration as $table => $configuration) {
             if (isset($configuration['columns'])) {
-                $this->columnsExistInTable($table, $configuration['columns']);
+                $columnsNotInTable[] = \implode(', ', $this->columnsExistInTable($table, $configuration['columns']));
             }
+        }
+
+        if (!empty($columnsNotInTable)) {
+            throw new ConfigurationFile('Configuration contains columns which do not exist: ' . \implode(', ', $columnsNotInTable));
         }
     }
 
@@ -68,13 +79,16 @@ class Validator
      * @throws ConfigurationFile
      * @throws Exceptions\UnsupportedDatabase
      */
-    private function columnsExistInTable(string $table, array $columns): void
+    private function columnsExistInTable(string $table, array $columns): array
     {
         $columnsInDatabaseTable = $this->databaseInformation->columns($table);
+        $columnsNotInTable = [];
         foreach (\array_keys($columns) as $columnInConfiguration) {
             if (!\in_array($columnInConfiguration, $columnsInDatabaseTable, true)) {
-                throw new ConfigurationFile('Configuration contains column which does not exist in the table: ' . $table . '.' . $columnInConfiguration);
+                $columnsNotInTable[] = $table . '.' . $columnInConfiguration;
             }
         }
+
+        return $columnsNotInTable;
     }
 }

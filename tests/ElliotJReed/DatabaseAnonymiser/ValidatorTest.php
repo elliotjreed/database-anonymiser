@@ -30,9 +30,10 @@ final class ValidatorTest extends DatabaseTestCase
     /**
      * @return void
      */
-    public function testItThrowsExceptionWhenTableDoesNotExistInDatabase(): void
+    public function testItReturnsAnArrayOfTableWhichDoNotExistInDatabase(): void
     {
         $this->expectException(ConfigurationFile::class);
+        $this->expectExceptionMessage('Configuration contains tables which do not exist in the database: fake_table');
 
         (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['fake_table' => []]);
     }
@@ -43,6 +44,7 @@ final class ValidatorTest extends DatabaseTestCase
     public function testItThrowsExceptionWhenColumnDoesNotExistInTable(): void
     {
         $this->expectException(ConfigurationFile::class);
+        $this->expectExceptionMessage('Configuration contains columns which do not exist: example_table.fake_column');
 
         (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['example_table' => ['columns' => ['fake_column' => '']]]);
     }
