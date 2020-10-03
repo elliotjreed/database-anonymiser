@@ -58,7 +58,7 @@ class DatabaseInformation
     {
         switch ($this->databaseDriver) {
             case 'sqlite':
-                return 'SELECT `name` FROM sqlite_master WHERE type = "table"';
+                return "SELECT `name` FROM sqlite_master WHERE type = 'table'";
             case 'mysql':
                 return 'SHOW TABLES';
             default:
@@ -87,9 +87,10 @@ class DatabaseInformation
      */
     private function ansiTableColumns(string $table): array
     {
-        $query = $this->pdo->prepare('SELECT COLUMN_NAME
-            FROM information_schema.COLUMNS
-            WHERE TABLE_NAME = ?');
+        $query = $this->pdo->prepare('
+          SELECT COLUMN_NAME
+          FROM information_schema.COLUMNS
+          WHERE TABLE_NAME = ?');
         $query->execute([$table]);
 
         return $query->fetchAll(PDO::FETCH_COLUMN);
