@@ -12,29 +12,19 @@ use PDO;
 
 final class AnonymiserTest extends DatabaseTestCase
 {
-    /** @var Anonymiser */
     private Anonymiser $anonymiser;
 
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
         $this->anonymiser = new Anonymiser($this->pdo, new DatabaseConfiguration($this->pdo), new Validator(new DatabaseInformation($this->pdo)));
     }
 
-    /**
-     * @return void
-     */
     public function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE example_table');
     }
 
-    /**
-     * @return void
-     */
     public function testItAnonymisesString(): void
     {
         $this->pdo->exec(
@@ -54,9 +44,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertSame('anonymised string', $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItAnonymisesMultipleColumns(): void
     {
         $this->pdo->exec(
@@ -78,9 +65,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertSame('second anonymised string', $result['second_example_column']);
     }
 
-    /**
-     * @return void
-     */
     public function testItRemovesNumberOfRowsInTable(): void
     {
         $this->pdo->exec(
@@ -98,9 +82,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertEquals(5, $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItRemovesNumberOfRowsInTableRetainingMostRecent(): void
     {
         $this->pdo->exec(
@@ -118,9 +99,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertEquals([5, 6, 7, 8, 9], $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItRemovesNumberOfRowsAndReplacesValues(): void
     {
         $this->pdo->exec(
@@ -142,9 +120,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertEquals([['example_column' => 'x', 'second_example_column' => 9], ['example_column' => 'x', 'second_example_column' => 9]], $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItTruncatesTable(): void
     {
         $this->pdo->exec(
@@ -162,9 +137,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertSame([], $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItRetainsNumberOfRowsRetainingMostRecent(): void
     {
         $this->pdo->exec(
@@ -182,9 +154,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertEquals([7, 8, 9], $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItDoesNothingWhenNumberOfRowsInTableIsLessThanRetainNumber(): void
     {
         $this->pdo->exec(
@@ -202,9 +171,6 @@ final class AnonymiserTest extends DatabaseTestCase
         $this->assertEquals([1, 2, 3], $result);
     }
 
-    /**
-     * @return void
-     */
     public function testItRetainsNumberOfRowsAndReplacesValues(): void
     {
         $this->pdo->exec(

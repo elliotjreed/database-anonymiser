@@ -9,9 +9,6 @@ use PDOException;
 
 final class SqliteDatabaseConfigurationTest extends DatabaseTestCase
 {
-    /**
-     * @return void
-     */
     public function testItTurnsOffForeignKeyChecks(): void
     {
         $this->pdo->exec(
@@ -28,9 +25,6 @@ final class SqliteDatabaseConfigurationTest extends DatabaseTestCase
         $this->assertSame(1, $rowsAffected);
     }
 
-    /**
-     * @return void
-     */
     public function testItThrowsExceptionByDefaultIfForeignKeyChecksAreEnabled(): void
     {
         $this->expectException(PDOException::class);

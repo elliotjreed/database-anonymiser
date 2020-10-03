@@ -8,9 +8,6 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 
 final class MysqlDatabaseConfigurationTest extends DatabaseTestCase
 {
-    /**
-     * @return void
-     */
     public function testItTurnsOffForeignKeyChecks(): void
     {
         $this->pdo->exec('SET FOREIGN_KEY_CHECKS=ON');

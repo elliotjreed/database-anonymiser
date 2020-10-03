@@ -10,26 +10,17 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 
 final class ValidatorTest extends DatabaseTestCase
 {
-    /**
-     * @return void
-     */
     public function setUp(): void
     {
         parent::setUp();
         $this->pdo->exec('CREATE TABLE table_which_exists (column_which_exists VARCHAR(17))');
     }
 
-    /**
-     * @return void
-     */
     public function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE table_which_exists');
     }
 
-    /**
-     * @return void
-     */
     public function testItReturnsAnArrayOfTableWhichDoNotExistInDatabase(): void
     {
         $this->expectException(ConfigurationFile::class);
@@ -38,9 +29,6 @@ final class ValidatorTest extends DatabaseTestCase
         (new Validator(new DatabaseInformation($this->pdo)))->validateConfiguration(['fake_table' => [], 'table_which_exists' => []]);
     }
 
-    /**
-     * @return void
-     */
     public function testItThrowsExceptionWhenColumnDoesNotExistInTable(): void
     {
         $this->expectException(ConfigurationFile::class);
