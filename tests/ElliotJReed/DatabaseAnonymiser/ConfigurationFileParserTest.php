@@ -11,53 +11,42 @@ use SplFileObject;
 
 final class ConfigurationFileParserTest extends TestCase
 {
-    /**
-     * @return void
-     */
     public function testItParsesPhpFile(): void
     {
-        (new SplFileObject('/tmp/test.php', 'w'))->fwrite("<?php\nreturn ['field' => 'value'];");
-        $file = new SplFileObject('/tmp/test.php', 'r');
+        $file = new SplFileObject('/tmp/test.php', 'wb+');
+        $file->fwrite("<?php\nreturn ['field' => 'value'];");
+        $file->rewind();
 
         $this->assertSame(['field' => 'value'], (new ConfigurationFileParser($file))->toArray());
     }
 
-    /**
-     * @return void
-     */
     public function testItParsesJsonFile(): void
     {
-        (new SplFileObject('/tmp/test.json', 'w+'))->fwrite('{"field":"value"}');
-        $file = new SplFileObject('/tmp/test.json', 'r');
+        $file = new SplFileObject('/tmp/test.json', 'wb+');
+        $file->fwrite('{"field":"value"}');
+        $file->rewind();
 
         $this->assertSame(['field' => 'value'], (new ConfigurationFileParser($file))->toArray());
     }
 
-    /**
-     * @return void
-     */
     public function testItParsesYamlFile(): void
     {
-        (new SplFileObject('/tmp/test.yaml', 'w'))->fwrite('field: value');
-        $file = new SplFileObject('/tmp/test.yaml', 'r');
+        $file = new SplFileObject('/tmp/test.yaml', 'wb+');
+        $file->fwrite('field: value');
+        $file->rewind();
 
         $this->assertSame(['field' => 'value'], (new ConfigurationFileParser($file))->toArray());
     }
 
-    /**
-     * @return void
-     */
     public function testItParsesYmlFile(): void
     {
-        (new SplFileObject('/tmp/test.yml', 'w'))->fwrite('field: value');
-        $file = new SplFileObject('/tmp/test.yml', 'r');
+        $file = new SplFileObject('/tmp/test.yml', 'wb+');
+        $file->fwrite('field: value');
+        $file->rewind();
 
         $this->assertSame(['field' => 'value'], (new ConfigurationFileParser($file))->toArray());
     }
 
-    /**
-     * @return void
-     */
     public function testItThrowsExceptionOnUnknownConfigurationFileType(): void
     {
         $this->expectException(UnsupportedConfigurationFile::class);
