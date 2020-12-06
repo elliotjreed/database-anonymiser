@@ -9,15 +9,12 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseConfiguration
 {
-    private PDO $pdo;
-
     /**
      * DatabaseInformation constructor.
      * @param PDO $pdo
      */
-    public function __construct(PDO $pdo)
+    public function __construct(private PDO $pdo)
     {
-        $this->pdo = $pdo;
     }
 
     /**

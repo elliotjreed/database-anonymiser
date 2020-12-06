@@ -9,21 +9,14 @@ use PDO;
 
 class Anonymiser
 {
-    private PDO $pdo;
-    private DatabaseConfiguration $configuration;
-    private Validator $validator;
-
     /**
      * Anonymiser constructor.
      * @param PDO $pdo
      * @param DatabaseConfiguration $configuration
      * @param Validator $validator
      */
-    public function __construct(PDO $pdo, DatabaseConfiguration $configuration, Validator $validator)
+    public function __construct(private PDO $pdo, private DatabaseConfiguration $configuration, private Validator $validator)
     {
-        $this->pdo = $pdo;
-        $this->configuration = $configuration;
-        $this->validator = $validator;
     }
 
     /**

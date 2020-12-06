@@ -9,15 +9,12 @@ use SplFileObject;
 
 class ConfigurationFileParser
 {
-    private SplFileObject $file;
-
     /**
      * ConfigurationFileParser constructor.
      * @param SplFileObject $file
      */
-    public function __construct(SplFileObject $file)
+    public function __construct(private SplFileObject $file)
     {
-        $this->file = $file;
     }
 
     /**

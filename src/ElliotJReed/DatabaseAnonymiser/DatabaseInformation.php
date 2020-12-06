@@ -9,17 +9,15 @@ use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
 
 class DatabaseInformation
 {
-    private PDO $pdo;
     private string $databaseDriver;
 
     /**
      * DatabaseInformation constructor.
      * @param PDO $pdo
      */
-    public function __construct(PDO $pdo)
+    public function __construct(private PDO $pdo)
     {
-        $this->pdo = $pdo;
-        $this->databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->databaseDriver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     }
 
     /**
@@ -90,7 +88,8 @@ class DatabaseInformation
         $query = $this->pdo->prepare('
           SELECT COLUMN_NAME
           FROM information_schema.COLUMNS
-          WHERE TABLE_NAME = ?');
+          WHERE TABLE_NAME = ?
+        ');
         $query->execute([$table]);
 
         return $query->fetchAll(PDO::FETCH_COLUMN);
