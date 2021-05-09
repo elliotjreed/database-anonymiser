@@ -10,7 +10,7 @@
   </coverage>
   <logging/>
   <php>
-    <env name="DB_DSN" value="mysql:host=127.0.0.1;dbname=anonymiser"/>
+    <env name="DB_DSN" value="mysql:host=127.0.0.1;port=3306;dbname=anonymiser;charset=utf8"/>
     <env name="DB_USERNAME" value="root"/>
     <env name="DB_PASSWORD" value=""/>
   </php>

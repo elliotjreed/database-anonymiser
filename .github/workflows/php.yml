@@ -51,7 +51,7 @@ jobs:
         run: composer install --no-interaction --classmap-authoritative --no-progress
 
       - name: Run unit tests
-        run: php vendor/bin/phpunit -c phpunit.xml --testsuite mysql
+        run: php vendor/bin/phpunit -c phpunit.xml --testsuite all
 
       - name: Run PHPCS
         run: vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true | cs2pr --graceful-warning
