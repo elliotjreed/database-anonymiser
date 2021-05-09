@@ -50,13 +50,11 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --classmap-authoritative --no-progress
 
-      - name: Find DB port
-        run: echo ${{ job.services.mysql.ports[3306] }}
+      - name: Run PHP MySQL unit tests
+        run: DB_DSN="mysql:host=127.0.0.1;dbname=anonymiser;charset=utf8;port=${{ job.services.mysql.ports[3306] }}" DB_USERNAME='root' php vendor/bin/phpunit -c phpunit.xml --testsuite mysql
 
-      - name: Run unit tests
-        run: php vendor/bin/phpunit -c phpunit.xml --testsuite all
+      - name: Run PHP SQLite unit tests
+        run: DB_DSN='sqlite::memory:' DB_USERNAME='' php vendor/bin/phpunit -c phpunit.xml --testsuite sqlite
 
       - name: Run PHPCS
         run: vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true | cs2pr --graceful-warning
-
-
