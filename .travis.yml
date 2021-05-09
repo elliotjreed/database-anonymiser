@@ -21,4 +21,5 @@ install:
 
 script:
   - vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true
-  - vendor/bin/phpunit -c phpunit.xml --testsuite mysql
+  - DB_DSN='mysql:host=127.0.0.1;dbname=anonymiser;charset=utf8;port=3306' DB_USERNAME='root' vendor/bin/phpunit -c phpunit.xml --testsuite mysql
+  - DB_DSN='sqlite::memory:' DB_USERNAME='' vendor/bin/phpunit -c phpunit.xml --testsuite sqlite

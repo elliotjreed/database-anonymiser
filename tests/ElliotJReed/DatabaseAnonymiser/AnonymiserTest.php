@@ -27,10 +27,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItAnonymisesString(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column VARCHAR(17));
-            INSERT INTO example_table (example_column) VALUES ("original string")'
-        );
+        $this->pdo->exec("
+          CREATE TABLE example_table (example_column VARCHAR(17));
+          INSERT INTO example_table (example_column) VALUES ('original string')
+        ");
         $configuration = [
             'example_table' => [
                 'columns' => [
@@ -46,10 +46,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItAnonymisesMultipleColumns(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column VARCHAR(17), second_example_column VARCHAR(24));
-            INSERT INTO example_table (example_column, second_example_column) VALUES ("original string", "second original string")'
-        );
+        $this->pdo->exec("
+          CREATE TABLE example_table (example_column VARCHAR(17), second_example_column VARCHAR(24));
+          INSERT INTO example_table (example_column, second_example_column) VALUES ('original string', 'second original string')
+        ");
         $configuration = [
             'example_table' => [
                 'columns' => [
@@ -67,10 +67,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItRemovesNumberOfRowsInTable(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column INT(1));
-            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
-        );
+        $this->pdo->exec('
+          CREATE TABLE example_table (example_column INT(1));
+          INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)
+        ');
         $configuration = [
             'example_table' => [
                 'remove' => 4
@@ -84,10 +84,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItRemovesNumberOfRowsInTableRetainingMostRecent(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column INT(1));
-            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
-        );
+        $this->pdo->exec('
+          CREATE TABLE example_table (example_column INT(1));
+          INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)
+        ');
         $configuration = [
             'example_table' => [
                 'remove' => 4
@@ -101,10 +101,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItRemovesNumberOfRowsAndReplacesValues(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
-            INSERT INTO example_table (example_column, second_example_column) VALUES ("a", 1), ("b", 2), ("c", 3), ("d", 4), ("e", 5)'
-        );
+        $this->pdo->exec("
+          CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
+          INSERT INTO example_table (example_column, second_example_column) VALUES ('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)
+        ");
         $configuration = [
             'example_table' => [
                 'remove' => 3,
@@ -122,10 +122,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItTruncatesTable(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column INT(1));
-            INSERT INTO example_table (example_column) VALUES (1), (2), (3)'
-        );
+        $this->pdo->exec('
+          CREATE TABLE example_table (example_column INT(1));
+          INSERT INTO example_table (example_column) VALUES (1), (2), (3)
+        ');
         $configuration = [
             'example_table' => [
                 'truncate' => true
@@ -139,10 +139,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItRetainsNumberOfRowsRetainingMostRecent(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column INT(1));
-            INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)'
-        );
+        $this->pdo->exec('
+          CREATE TABLE example_table (example_column INT(1));
+          INSERT INTO example_table (example_column) VALUES (1), (2), (3), (4), (5), (6), (7), (8), (9)
+        ');
         $configuration = [
             'example_table' => [
                 'retain' => 3
@@ -156,10 +156,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItDoesNothingWhenNumberOfRowsInTableIsLessThanRetainNumber(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column INT(1));
-            INSERT INTO example_table (example_column) VALUES (1), (2), (3)'
-        );
+        $this->pdo->exec('
+          CREATE TABLE example_table (example_column INT(1));
+          INSERT INTO example_table (example_column) VALUES (1), (2), (3)
+        ');
         $configuration = [
             'example_table' => [
                 'retain' => 4
@@ -173,10 +173,10 @@ final class AnonymiserTest extends DatabaseTestCase
 
     public function testItRetainsNumberOfRowsAndReplacesValues(): void
     {
-        $this->pdo->exec(
-            'CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
-            INSERT INTO example_table (example_column, second_example_column) VALUES ("a", 1), ("b", 2), ("c", 3), ("d", 4), ("e", 5)'
-        );
+        $this->pdo->exec("
+          CREATE TABLE example_table (example_column CHAR(1), second_example_column INT(1));
+          INSERT INTO example_table (example_column, second_example_column) VALUES ('a', 1), ('b', 2), ('c', 3), ('d', 4), ('e', 5)
+        ");
         $configuration = [
             'example_table' => [
                 'retain' => 2,

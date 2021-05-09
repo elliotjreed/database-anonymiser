@@ -1,0 +1,60 @@
+name: PHP Tests
+
+on: [push, pull_request]
+
+jobs:
+  php:
+    name: PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}
+
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8.0']
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: anonymiser
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP, with composer and extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: pdo, sqlite, pdo_sqlite, mysql, pdo_mysql
+          coverage: xdebug
+          tools: cs2pr
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --classmap-authoritative --no-progress
+
+      - name: Run PHP MySQL unit tests
+        run: DB_DSN="mysql:host=127.0.0.1;dbname=anonymiser;charset=utf8;port=${{ job.services.mysql.ports[3306] }}" DB_USERNAME='root' php vendor/bin/phpunit -c phpunit.xml --testsuite mysql
+
+      - name: Run PHP SQLite unit tests
+        run: DB_DSN='sqlite::memory:' DB_USERNAME='' php vendor/bin/phpunit -c phpunit.xml --testsuite sqlite
+
+      - name: Run PHPCS
+        run: vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true | cs2pr --graceful-warning
