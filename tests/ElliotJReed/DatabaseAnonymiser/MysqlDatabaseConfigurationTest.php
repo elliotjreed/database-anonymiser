@@ -13,7 +13,7 @@ final class MysqlDatabaseConfigurationTest extends DatabaseTestCase
         $this->pdo->exec('SET FOREIGN_KEY_CHECKS=ON');
         (new DatabaseConfiguration($this->pdo))->disableForeignKeyChecks();
 
-        $query = $this->pdo->query('SHOW LOCAL VARIABLES LIKE "foreign_key_checks"');
+        $query = $this->pdo->query("SHOW LOCAL VARIABLES LIKE 'foreign_key_checks'");
 
         $this->assertSame('OFF', $query->fetch()['Value']);
     }

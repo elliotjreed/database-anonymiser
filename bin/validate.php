@@ -5,7 +5,6 @@ declare(strict_types=1);
 
 use ElliotJReed\DatabaseAnonymiser\ConfigurationFileParser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 use ElliotJReed\DatabaseAnonymiser\Validator;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -25,8 +24,6 @@ try {
 
     echo 'Configuration file is valid!' . PHP_EOL;
     exit(0);
-} catch (ConfigurationFile $exception) {
-    echo $exception->getMessage() . PHP_EOL;
 } catch (Exception $exception) {
     echo $exception->getMessage() . PHP_EOL;
 }

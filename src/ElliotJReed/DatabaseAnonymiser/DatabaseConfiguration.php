@@ -32,13 +32,10 @@ class DatabaseConfiguration
     private function disableForeignKeyChecksSql(): string
     {
         $databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
-        switch ($databaseDriver) {
-            case 'sqlite':
-                return 'PRAGMA foreign_keys = 0';
-            case 'mysql':
-                return 'SET FOREIGN_KEY_CHECKS=0';
-            default:
-                throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver);
-        }
+        return match ($databaseDriver) {
+            'sqlite' => 'PRAGMA foreign_keys = 0',
+            'mysql' => 'SET FOREIGN_KEY_CHECKS=0',
+            default => throw new UnsupportedDatabase('Unsupported database driver: ' . $databaseDriver),
+        };
     }
 }

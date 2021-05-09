@@ -3,12 +3,11 @@
 
 declare(strict_types=1);
 
+use ElliotJReed\DatabaseAnonymiser\Anonymiser;
 use ElliotJReed\DatabaseAnonymiser\ConfigurationFileParser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
-use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
 use ElliotJReed\DatabaseAnonymiser\Validator;
-use ElliotJReed\DatabaseAnonymiser\Anonymiser;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -27,8 +26,6 @@ try {
 
     echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . PHP_EOL;
     exit(0);
-} catch (ConfigurationFile $exception) {
-    echo $exception->getMessage() . PHP_EOL;
 } catch (Exception $exception) {
     echo $exception->getMessage() . PHP_EOL;
 }
