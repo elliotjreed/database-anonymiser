@@ -50,6 +50,9 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --no-interaction --classmap-authoritative --no-progress
 
+      - name: Find DB port
+        run: echo ${{ job.services.mysql.ports[3306] }}
+
       - name: Run unit tests
         run: php vendor/bin/phpunit -c phpunit.xml --testsuite all
 
