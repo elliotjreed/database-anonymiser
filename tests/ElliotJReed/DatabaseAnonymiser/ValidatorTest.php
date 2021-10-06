@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
-use ElliotJReed\DatabaseAnonymiser\Validator;
 use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
+use ElliotJReed\DatabaseAnonymiser\Validator;
 
 final class ValidatorTest extends DatabaseTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->pdo->exec('CREATE TABLE table_which_exists (column_which_exists VARCHAR(17))');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE table_which_exists');
     }

@@ -8,13 +8,13 @@ use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 
 final class DatabaseInformationTest extends DatabaseTestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->pdo->exec('CREATE TABLE example_table (example_column VARCHAR(17), second_example_column VARCHAR(24))');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE example_table');
     }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ElliotJReed\DatabaseAnonymiser;
 
-use PDO;
 use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
+use PDO;
 
 class DatabaseInformation
 {
@@ -13,6 +13,7 @@ class DatabaseInformation
 
     /**
      * DatabaseInformation constructor.
+     *
      * @param PDO $pdo
      */
     public function __construct(private PDO $pdo)
@@ -22,6 +23,7 @@ class DatabaseInformation
 
     /**
      * @return array An array of tables in the database
+     *
      * @throws UnsupportedDatabase
      */
     public function tables(): array
@@ -33,7 +35,9 @@ class DatabaseInformation
 
     /**
      * @param string $tableName The name of the database table
+     *
      * @return array An array of columns in the table
+     *
      * @throws UnsupportedDatabase
      */
     public function columns(string $tableName): array
@@ -50,6 +54,7 @@ class DatabaseInformation
 
     /**
      * @return string The appropriate SQL query for returning a list of tables depending on the database driver used
+     *
      * @throws UnsupportedDatabase
      */
     private function tableListSql(): string
@@ -66,6 +71,7 @@ class DatabaseInformation
 
     /**
      * @param string $table The table name
+     *
      * @return array An array of columns in the table
      */
     private function sqliteTableColumns(string $table): array
@@ -81,6 +87,7 @@ class DatabaseInformation
 
     /**
      * @param string $table The table name
+     *
      * @return array An array of columns in the table
      */
     private function ansiTableColumns(string $table): array

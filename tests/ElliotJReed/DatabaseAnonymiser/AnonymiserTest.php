@@ -14,13 +14,13 @@ final class AnonymiserTest extends DatabaseTestCase
 {
     private Anonymiser $anonymiser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->anonymiser = new Anonymiser($this->pdo, new DatabaseConfiguration($this->pdo), new Validator(new DatabaseInformation($this->pdo)));
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         $this->pdo->exec('DROP TABLE example_table');
     }

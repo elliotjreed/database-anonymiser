@@ -11,6 +11,7 @@ class ConfigurationFileParser
 {
     /**
      * ConfigurationFileParser constructor.
+     *
      * @param SplFileObject $file
      */
     public function __construct(private SplFileObject $file)
@@ -19,20 +20,21 @@ class ConfigurationFileParser
 
     /**
      * @return array An array of database configuration values and database tables to anonymise
+     *
      * @throws UnsupportedConfigurationFile
      */
     public function toArray(): array
     {
         $extension = $this->file->getExtension();
-        if ($extension === 'php') {
+        if ('php' === $extension) {
             return require $this->file->getRealPath();
         }
 
-        if ($extension === 'json') {
+        if ('json' === $extension) {
             return \json_decode($this->file->fread($this->file->getSize()), true);
         }
 
-        if ($extension === 'yml' || $extension === 'yaml') {
+        if ('yml' === $extension || 'yaml' === $extension) {
             return \yaml_parse_file($this->file->getRealPath());
         }
 
