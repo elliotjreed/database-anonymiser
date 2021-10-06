@@ -10,6 +10,7 @@ class Validator
 {
     /**
      * Validator constructor.
+     *
      * @param DatabaseInformation $databaseInformation
      */
     public function __construct(private DatabaseInformation $databaseInformation)
@@ -18,7 +19,7 @@ class Validator
 
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
-     * @return void
+     *
      * @throws Exceptions\UnsupportedDatabase
      * @throws ConfigurationFile
      */
@@ -33,7 +34,9 @@ class Validator
 
     /**
      * @param array $tablesConfiguration An array of table names as keys with their corresponding configurations as values
+     *
      * @return array An array of tables and / or columns which do not exist in the database
+     *
      * @throws Exceptions\UnsupportedDatabase
      */
     private function invalidTables(array $tablesConfiguration): array
@@ -55,9 +58,8 @@ class Validator
     }
 
     /**
-     * @param string $table The database table to check
-     * @param array $tablesInDatabase An array of tables which exist in the database
-     * @return bool
+     * @param string $table            The database table to check
+     * @param array  $tablesInDatabase An array of tables which exist in the database
      */
     private function tableInDatabase(string $table, array $tablesInDatabase): bool
     {
@@ -65,9 +67,11 @@ class Validator
     }
 
     /**
-     * @param string $table The database table
-     * @param array $columns The columns to check whether or not they exists in the table
+     * @param string $table   The database table
+     * @param array  $columns The columns to check whether or not they exists in the table
+     *
      * @return array An array of columns which do not exist in the table
+     *
      * @throws Exceptions\UnsupportedDatabase
      */
     private function columnsNotInTable(string $table, array $columns): array

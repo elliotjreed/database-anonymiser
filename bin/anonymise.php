@@ -12,7 +12,7 @@ use ElliotJReed\DatabaseAnonymiser\Validator;
 require __DIR__ . '/../vendor/autoload.php';
 
 if (!isset($argv[1])) {
-    echo 'Please specify a YAML, JSON, or PHP configuration file.' . PHP_EOL;
+    echo 'Please specify a YAML, JSON, or PHP configuration file.' . \PHP_EOL;
     exit(1);
 }
 
@@ -24,10 +24,10 @@ try {
 
     (new Anonymiser($pdo, new DatabaseConfiguration($pdo), new Validator(new DatabaseInformation($pdo))))->anonymise($configuration['anonymise']);
 
-    echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . PHP_EOL;
+    echo 'Anonymisation complete! Remember to check all tables manually for potentially sensitive data which may have been missing from your configuration.' . \PHP_EOL;
     exit(0);
 } catch (Exception $exception) {
-    echo $exception->getMessage() . PHP_EOL;
+    echo $exception->getMessage() . \PHP_EOL;
 }
 
 exit(1);

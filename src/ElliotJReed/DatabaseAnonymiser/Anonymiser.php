@@ -11,9 +11,10 @@ class Anonymiser
 {
     /**
      * Anonymiser constructor.
-     * @param PDO $pdo
+     *
+     * @param PDO                   $pdo
      * @param DatabaseConfiguration $configuration
-     * @param Validator $validator
+     * @param Validator             $validator
      */
     public function __construct(private PDO $pdo, private DatabaseConfiguration $configuration, private Validator $validator)
     {
@@ -21,9 +22,9 @@ class Anonymiser
 
     /**
      * @param array $tables An array of table names with their corresponding configurations
+     *
      * @throws ConfigurationFile
      * @throws Exceptions\UnsupportedDatabase
-     * @return void
      */
     public function anonymise(array $tables): void
     {
@@ -36,12 +37,10 @@ class Anonymiser
 
     /**
      * @param string $tableName The name of the table to be processed
-     * @param array $configuration
-     * @return void
      */
     private function processTable(string $tableName, array $configuration): void
     {
-        if (isset($configuration['truncate']) && $configuration['truncate'] === true) {
+        if (isset($configuration['truncate']) && true === $configuration['truncate']) {
             $this->truncate($tableName);
         } else {
             $this->modifyRows($tableName, $configuration);
@@ -50,21 +49,16 @@ class Anonymiser
 
     /**
      * @param string $tableName The name of the table to truncate
-     * @return void
      */
     private function truncate(string $tableName): void
     {
-        if ($this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME) === 'mysql') {
+        if ('mysql' === $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME)) {
             $this->pdo->exec('TRUNCATE TABLE ' . $this->safeTableName($tableName));
         } else {
             $this->pdo->exec('DELETE FROM ' . $this->safeTableName($tableName));
         }
     }
 
-    /**
-     * @param string $tableName
-     * @param array $configuration
-     */
     private function modifyRows(string $tableName, array $configuration): void
     {
         if (isset($configuration['retain'])) {
@@ -79,9 +73,8 @@ class Anonymiser
     }
 
     /**
-     * @param string $tableName The name of the table to remove columns from
-     * @param int $numberOfRowsToRetain The number of rows to retain in the table
-     * @return void
+     * @param string $tableName            The name of the table to remove columns from
+     * @param int    $numberOfRowsToRetain The number of rows to retain in the table
      */
     private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
     {
@@ -95,9 +88,8 @@ class Anonymiser
     }
 
     /**
-     * @param string $tableName The name of the table to remove columns from
-     * @param int $numberOfRowsToRemove The number of rows to remove from the table
-     * @return void
+     * @param string $tableName            The name of the table to remove columns from
+     * @param int    $numberOfRowsToRemove The number of rows to remove from the table
      */
     private function removeColumns(string $tableName, int $numberOfRowsToRemove): void
     {
@@ -108,8 +100,7 @@ class Anonymiser
 
     /**
      * @param string $tableName The name of the table to replace column values
-     * @param array $columns An array of columns and their corresponding row replacement values
-     * @return void
+     * @param array  $columns   An array of columns and their corresponding row replacement values
      */
     private function replaceRowValues(string $tableName, array $columns): void
     {
@@ -124,6 +115,7 @@ class Anonymiser
 
     /**
      * @param string $tableName The name of the table to ensure is safe for use in SQL
+     *
      * @return string The safe table name to use in SQL
      */
     private function safeTableName(string $tableName): string

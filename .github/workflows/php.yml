@@ -56,5 +56,5 @@ jobs:
       - name: Run PHP SQLite unit tests
         run: DB_DSN='sqlite::memory:' DB_USERNAME='' php vendor/bin/phpunit -c phpunit.xml --testsuite sqlite
 
-      - name: Run PHPCS
-        run: vendor/bin/phpcs -q --standard=ruleset.xml --runtime-set ignore_warnings_on_exit true | cs2pr --graceful-warning
+      - name: Run PHP CS Fixer (Dry Run)
+        run: php vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --using-cache=no --format=checkstyle | cs2pr --graceful-warnings
