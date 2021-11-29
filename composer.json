@@ -27,7 +27,7 @@
   },
   "require-dev": {
     "ext-sqlite3": "*",
-    "friendsofphp/php-cs-fixer": "^3.2",
+    "friendsofphp/php-cs-fixer": "^3.3",
     "php-coveralls/php-coveralls": "^2.4",
     "phpunit/phpunit": "^9.5",
     "roave/security-advisories": "dev-master",
@@ -40,6 +40,6 @@
     ],
     "phpunit": "DB_DSN='sqlite::memory:' DB_USERNAME='' DB_PASSWORD='' vendor/bin/phpunit -c phpunit.xml --coverage-text --testsuite sqlite",
     "coverage": "DB_DSN='sqlite::memory:' DB_USERNAME='' DB_PASSWORD='' vendor/bin/phpunit -c phpunit.xml --coverage-html ./coverage --testsuite sqlite",
-      "phpcs": "vendor/bin/php-cs-fixer fix --allow-risky=yes && vendor/bin/phpcs --standard=ruleset.xml"
+    "phpcs": "vendor/bin/php-cs-fixer fix --allow-risky=yes && vendor/bin/phpcs --standard=ruleset.xml"
   }
 }
