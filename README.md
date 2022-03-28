@@ -14,7 +14,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 This package requires:
 
-  - PHP 7.4+
+  - PHP 8.0+
   - [Composer](https://getcomposer.org/)
 
 ### Installing
