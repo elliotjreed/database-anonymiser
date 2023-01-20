@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
-use PDO;
 
 class DatabaseConfiguration
 {
     /**
      * DatabaseInformation constructor.
-     *
-     * @param PDO $pdo
      */
-    public function __construct(private PDO $pdo)
+    public function __construct(private \PDO $pdo)
     {
     }
 
@@ -33,7 +30,7 @@ class DatabaseConfiguration
      */
     private function disableForeignKeyChecksSql(): string
     {
-        $databaseDriver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $databaseDriver = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
         return match ($databaseDriver) {
             'sqlite' => 'PRAGMA foreign_keys = 0',

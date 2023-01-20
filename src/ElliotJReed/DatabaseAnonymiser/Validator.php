@@ -10,8 +10,6 @@ class Validator
 {
     /**
      * Validator constructor.
-     *
-     * @param DatabaseInformation $databaseInformation
      */
     public function __construct(private DatabaseInformation $databaseInformation)
     {

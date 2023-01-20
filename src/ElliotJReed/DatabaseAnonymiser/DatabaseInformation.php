@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedDatabase;
-use PDO;
 
 class DatabaseInformation
 {
@@ -13,12 +12,10 @@ class DatabaseInformation
 
     /**
      * DatabaseInformation constructor.
-     *
-     * @param PDO $pdo
      */
-    public function __construct(private PDO $pdo)
+    public function __construct(private \PDO $pdo)
     {
-        $this->databaseDriver = $pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $this->databaseDriver = $pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
     }
 
     /**
@@ -30,7 +27,7 @@ class DatabaseInformation
     {
         return $this->pdo
             ->query($this->tableListSql())
-            ->fetchAll(PDO::FETCH_COLUMN);
+            ->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /**
@@ -99,6 +96,6 @@ class DatabaseInformation
         ');
         $query->execute([$table]);
 
-        return $query->fetchAll(PDO::FETCH_COLUMN);
+        return $query->fetchAll(\PDO::FETCH_COLUMN);
     }
 }

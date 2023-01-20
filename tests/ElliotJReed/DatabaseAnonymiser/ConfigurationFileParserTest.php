@@ -7,13 +7,12 @@ namespace ElliotJReed\Tests\DatabaseAnonymiser;
 use ElliotJReed\DatabaseAnonymiser\ConfigurationFileParser;
 use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedConfigurationFile;
 use PHPUnit\Framework\TestCase;
-use SplFileObject;
 
 final class ConfigurationFileParserTest extends TestCase
 {
     public function testItParsesPhpFile(): void
     {
-        $file = new SplFileObject('/tmp/test.php', 'wb+');
+        $file = new \SplFileObject('/tmp/test.php', 'wb+');
         $file->fwrite("<?php\nreturn ['field' => 'value'];");
         $file->rewind();
 
@@ -22,7 +21,7 @@ final class ConfigurationFileParserTest extends TestCase
 
     public function testItParsesJsonFile(): void
     {
-        $file = new SplFileObject('/tmp/test.json', 'wb+');
+        $file = new \SplFileObject('/tmp/test.json', 'wb+');
         $file->fwrite('{"field":"value"}');
         $file->rewind();
 
@@ -31,7 +30,7 @@ final class ConfigurationFileParserTest extends TestCase
 
     public function testItParsesYamlFile(): void
     {
-        $file = new SplFileObject('/tmp/test.yaml', 'wb+');
+        $file = new \SplFileObject('/tmp/test.yaml', 'wb+');
         $file->fwrite('field: value');
         $file->rewind();
 
@@ -40,7 +39,7 @@ final class ConfigurationFileParserTest extends TestCase
 
     public function testItParsesYmlFile(): void
     {
-        $file = new SplFileObject('/tmp/test.yml', 'wb+');
+        $file = new \SplFileObject('/tmp/test.yml', 'wb+');
         $file->fwrite('field: value');
         $file->rewind();
 
@@ -51,7 +50,7 @@ final class ConfigurationFileParserTest extends TestCase
     {
         $this->expectException(UnsupportedConfigurationFile::class);
 
-        $file = new SplFileObject('/tmp/test.ext', 'w+');
+        $file = new \SplFileObject('/tmp/test.ext', 'w+');
         (new ConfigurationFileParser($file))->toArray();
     }
 }
