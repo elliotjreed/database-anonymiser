@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Exceptions\UnsupportedConfigurationFile;
+use SplFileObject;
 
 class ConfigurationFileParser
 {
     /**
      * ConfigurationFileParser constructor.
      */
-    public function __construct(private \SplFileObject $file)
+    public function __construct(private SplFileObject $file)
     {
     }
 

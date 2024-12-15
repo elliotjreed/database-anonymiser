@@ -8,6 +8,7 @@ use ElliotJReed\DatabaseAnonymiser\Anonymiser;
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
 use ElliotJReed\DatabaseAnonymiser\DatabaseInformation;
 use ElliotJReed\DatabaseAnonymiser\Validator;
+use PDO;
 
 final class AnonymiserTest extends DatabaseTestCase
 {
@@ -38,7 +39,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(\PDO::FETCH_COLUMN);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(PDO::FETCH_COLUMN);
 
         $this->assertSame('anonymised string', $result);
     }
@@ -76,7 +77,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(\PDO::FETCH_COLUMN);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetch(PDO::FETCH_COLUMN);
 
         $this->assertEquals(5, $result);
     }
@@ -93,7 +94,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(\PDO::FETCH_COLUMN);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
 
         $this->assertEquals([5, 6, 7, 8, 9], $result);
     }
@@ -114,7 +115,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(PDO::FETCH_ASSOC);
 
         $this->assertEquals([['example_column' => 'x', 'second_example_column' => 9], ['example_column' => 'x', 'second_example_column' => 9]], $result);
     }
@@ -148,7 +149,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(\PDO::FETCH_COLUMN);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
 
         $this->assertEquals([7, 8, 9], $result);
     }
@@ -165,7 +166,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(\PDO::FETCH_COLUMN);
+        $result = $this->pdo->query('SELECT example_column FROM example_table')->fetchAll(PDO::FETCH_COLUMN);
 
         $this->assertEquals([1, 2, 3], $result);
     }
@@ -186,7 +187,7 @@ final class AnonymiserTest extends DatabaseTestCase
             ]
         ];
         $this->anonymiser->anonymise($configuration);
-        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(\PDO::FETCH_ASSOC);
+        $result = $this->pdo->query('SELECT example_column, second_example_column FROM example_table')->fetchAll(PDO::FETCH_ASSOC);
 
         $this->assertEquals([['example_column' => 'x', 'second_example_column' => 9], ['example_column' => 'x', 'second_example_column' => 9]], $result);
     }

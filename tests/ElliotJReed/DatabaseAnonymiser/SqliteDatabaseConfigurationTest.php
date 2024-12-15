@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\DatabaseConfiguration;
+use PDOException;
 
 final class SqliteDatabaseConfigurationTest extends DatabaseTestCase
 {
@@ -26,7 +27,7 @@ final class SqliteDatabaseConfigurationTest extends DatabaseTestCase
 
     public function testItThrowsExceptionByDefaultIfForeignKeyChecksAreEnabled(): void
     {
-        $this->expectException(\PDOException::class);
+        $this->expectException(PDOException::class);
 
         $this->pdo->exec('
           PRAGMA foreign_keys = 1;

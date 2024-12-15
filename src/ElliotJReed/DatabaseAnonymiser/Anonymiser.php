@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace ElliotJReed\DatabaseAnonymiser;
 
 use ElliotJReed\DatabaseAnonymiser\Exceptions\ConfigurationFile;
+use PDO;
 
 class Anonymiser
 {
     /**
      * Anonymiser constructor.
      */
-    public function __construct(private \PDO $pdo, private DatabaseConfiguration $configuration, private Validator $validator)
+    public function __construct(private PDO $pdo, private DatabaseConfiguration $configuration, private Validator $validator)
     {
     }
 
@@ -47,7 +48,7 @@ class Anonymiser
      */
     private function truncate(string $tableName): void
     {
-        if ('mysql' === $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME)) {
+        if ('mysql' === $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME)) {
             $this->pdo->exec('TRUNCATE TABLE ' . $this->safeTableName($tableName));
         } else {
             $this->pdo->exec('DELETE FROM ' . $this->safeTableName($tableName));
@@ -74,7 +75,7 @@ class Anonymiser
     private function retainColumns(string $tableName, int $numberOfRowsToRetain): void
     {
         $query = $this->pdo->query('SELECT COUNT(*) FROM ' . $this->safeTableName($tableName));
-        $totalRows = (int) $query->fetch(\PDO::FETCH_COLUMN);
+        $totalRows = (int) $query->fetch(PDO::FETCH_COLUMN);
 
         if ($totalRows >= $numberOfRowsToRetain) {
             $rowsToRemove = $totalRows - $numberOfRowsToRetain;
@@ -89,7 +90,7 @@ class Anonymiser
     private function removeColumns(string $tableName, int $numberOfRowsToRemove): void
     {
         $query = $this->pdo->prepare('DELETE FROM ' . $this->safeTableName($tableName) . ' LIMIT :limit');
-        $query->bindValue('limit', $numberOfRowsToRemove, \PDO::PARAM_INT);
+        $query->bindValue('limit', $numberOfRowsToRemove, PDO::PARAM_INT);
         $query->execute();
     }
 

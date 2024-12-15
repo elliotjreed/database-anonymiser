@@ -5,4 +5,5 @@ composer.phar
 /testdox/
 /bin/*.yml
 .phpunit.result.cache
+.phpunit.cache
 .php-cs-fixer.cache

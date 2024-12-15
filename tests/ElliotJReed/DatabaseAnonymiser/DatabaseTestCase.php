@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace ElliotJReed\Tests\DatabaseAnonymiser;
 
+use PDO;
 use PHPUnit\Framework\TestCase;
 
 abstract class DatabaseTestCase extends TestCase
 {
-    protected \PDO $pdo;
+    protected PDO $pdo;
 
     protected function setUp(): void
     {

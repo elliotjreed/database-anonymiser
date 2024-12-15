@@ -1,9 +1,6 @@
-[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser)
-
 # PHP Database Anonymiser
 
-A library to anonymise datatbase data. For example, anonymising production data for use in development environments.
-
+A library to anonymise database data. For example, anonymising production data for use in development environments.
 
 ## Getting Started
 
@@ -14,7 +11,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 This package requires:
 
-  - PHP 8.0+
+  - PHP 8.3+
   - [Composer](https://getcomposer.org/)
 
 ### Installing
