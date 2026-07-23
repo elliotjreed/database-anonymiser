@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/elliotjreed/database-anonymiser.svg?branch=master)](https://travis-ci.org/elliotjreed/database-anonymiser)
+Please note: this is now not actively maintained. I have now switched to: https://github.com/elliotjreed/database-anonymiser-minimiser
 
 # PHP Database Anonymiser
 
